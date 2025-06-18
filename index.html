@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Black Echo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Roboto&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body, html { height: 100%; font-family: 'Roboto', sans-serif; color: white; background: black; overflow-x: hidden; }
+    #bg-video { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -2; }
+    #particles-js { position: fixed; width: 100%; height: 100%; z-index: -1; }
+    header { text-align: center; padding: 2rem 1rem; background: rgba(0,0,0,0.4); backdrop-filter: blur(6px); }
+    header h1 { font-size: 3rem; font-family: 'Orbitron', sans-serif; color: #00ffff; text-shadow: 0 0 10px #00ffff; animation: pulse 4s infinite; }
+    @keyframes pulse { 0%, 100% { text-shadow: 0 0 10px #00ffff; } 50% { text-shadow: 0 0 20px #00ffff, 0 0 30px #00ffff; } }
+    main { max-width: 1000px; margin: auto; padding: 3rem 1rem; }
+    section { background: rgba(0, 0, 0, 0.6); border: 1px solid #00ffff55; box-shadow: 0 0 20px #00ffff55; border-radius: 15px; padding: 2rem; margin-bottom: 2rem; backdrop-filter: blur(10px); animation: fadeIn 1s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    h2 { font-family: 'Orbitron', sans-serif; color: #00ffff; margin-bottom: 1rem; }
+    .button { display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background: #00ffff; color: black; font-weight: bold; border-radius: 8px; text-decoration: none; transition: 0.3s ease; }
+    .button:hover { background: #00cccc; box-shadow: 0 0 10px #00ffff; transform: scale(1.05); }
+    .radio-group { display: flex; gap: 1rem; margin-top: 1rem; }
+    .radio-option { background: #111; padding: 1rem; border-radius: 10px; cursor: pointer; box-shadow: 0 0 10px #00ffff55; transition: 0.3s; }
+    .radio-option:hover { background: #222; box-shadow: 0 0 20px #00ffffaa; }
+    input[type="radio"] { margin-right: 0.5rem; }
+    footer { text-align: center; padding: 2rem; font-size: 0.9rem; color: #ccc; background: rgba(0,0,0,0.4); }
+  </style>
+</head>
+<body>
+  <video id="bg-video" autoplay loop muted>
+    <source src="background.mp4" type="video/mp4" />
+  </video>
+  <div id="particles-js"></div>
+
+  <header>
+    <h1>BLACK ECHO</h1>
+    <p>El ejecutor más potente y sigiloso para Roblox</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>🔥 Características</h2>
+      <ul>
+        <li>Alta compatibilidad con Velocity & Xeno</li>
+        <li>Inyección sigilosa con detección anti-crash</li>
+        <li>Interfaz modular con sistema de pestañas infinito</li>
+        <li>Soporte para API personalizada</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>⚙️ Elegir Motor</h2>
+      <div class="radio-group">
+        <label class="radio-option"><input type="radio" name="engine" />Velocity</label>
+        <label class="radio-option"><input type="radio" name="engine" />Xeno</label>
+      </div>
+    </section>
+
+    <section>
+      <h2>📦 Descargar</h2>
+      <p>Última versión disponible:</p>
+      <a class="button" href="#">Descargar Ahora</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Black Echo - Todos los derechos reservados</p>
+  </footer>
+
+  <script>
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 80 },
+        color: { value: "#00ffff" },
+        shape: { type: "circle" },
+        opacity: { value: 0.4 },
+        size: { value: 3 },
+        line_linked: {
+          enable: true,
+          distance: 120,
+          color: "#00ffff",
+          opacity: 0.4,
+          width: 1,
+        },
+        move: { enable: true, speed: 2, direction: "none", out_mode: "bounce" },
+      },
+      interactivity: {
+        events: {
+          onhover: { enable: true, mode: "grab" },
+          onclick: { enable: true, mode: "push" },
+        },
+        modes: {
+          grab: { distance: 140, line_linked: { opacity: 1 } },
+          push: { particles_nb: 4 },
+        },
+      },
+      retina_detect: true,
+    });
+  </script>
+</body>
+</html>
