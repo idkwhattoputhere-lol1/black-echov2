@@ -1,174 +1,204 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Black Echo - Executor</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Roboto&display=swap" rel="stylesheet">
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-<style>
-  /* Reset básico */
-  * { margin:0; padding:0; box-sizing:border-box; }
-  html, body { height:100%; font-family:'Roboto',sans-serif; color:#fff; overflow-x:hidden; perspective:1200px; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Black Echo - Executor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Roboto&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  /* Loading screen */
-  #loader {
-    position:fixed; inset:0; background:#000; display:flex;
-    justify-content:center; align-items:center; z-index:9999;
-  }
-  #loader div {
-    width:60px; height:60px; border:6px solid #00f5d4;
-    border-top-color:transparent; border-radius:50%;
-    animation:spin 1s linear infinite;
-  }
-  @keyframes spin { to { transform:rotate(360deg); } }
+    html, body {
+      height: 100%;
+      font-family: 'Roboto', sans-serif;
+      background: black;
+      color: white;
+      overflow-x: hidden;
+    }
 
-  /* Fondo y parallax */
-  body::before {
-    content:'';
-    position:fixed; inset:0;
-    background:url('https://i.imgur.com/gqCG2Dd.gif') center/cover no-repeat;
-    transform:translateZ(-1px) scale(2);
-    opacity:0.25; z-index:-2;
-  }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, #0d0d0d 0%, #000000 100%);
+      z-index: -2;
+    }
 
-  /* Header y nav */
-  header { padding:1rem; background:rgba(0,0,0,0.6); backdrop-filter:blur(8px); position:sticky; top:0; z-index:100; }
-  .logo { font-family:'Orbitron',sans-serif; font-size:2.5rem; color:#00f5d4; transform:translateZ(20px); }
-  nav { display:flex; justify-content:center; gap:2rem; margin-top:0.5rem; flex-wrap:wrap; }
-  nav a { color:#00f5d4; text-decoration:none; font-weight:bold; transition:transform 0.2s; }
-  nav a:hover { color:#fff; transform:translateY(-3px); }
+    header {
+      text-align: center;
+      padding: 3rem 1rem 1rem;
+      background-color: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+    }
 
-  /* Botón 3D */
-  .button {
-    display:inline-block; margin-top:1rem;
-    padding:0.8rem 1.5rem; background:#00f5d4; color:#000;
-    border:none; border-radius:10px; font-weight:bold;
-    transform-style:preserve-3d;
-    transition:transform 0.2s, box-shadow 0.2s;
-  }
-  .button:hover {
-    transform:rotateX(10deg) rotateY(10deg) translateZ(10px);
-    box-shadow:0 10px 20px rgba(0,245,212,0.5);
-  }
+    header img {
+      width: 140px;
+      filter: drop-shadow(0 0 20px #00f5d4);
+      animation: float 4s ease-in-out infinite;
+    }
 
-  /* Secciones */
-  main { padding:3rem 1rem; max-width:1200px; margin:auto; display:grid; gap:3rem; }
-  section {
-    background:rgba(0,0,0,0.7); border-radius:12px; padding:2rem;
-    transform-style:preserve-3d; transition:transform 0.2s;
-  }
-  section:hover { transform:translateZ(20px); box-shadow:0 0 30px rgba(0,245,212,0.3); }
-  section h2 { font-family:'Orbitron',sans-serif; color:#00f5d4; margin-bottom:1rem; }
-  ul { margin-left:1.5rem; list-style-type: disc; }
-  ul li, section p { line-height:1.6; }
+    header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      margin-top: 1rem;
+      color: #00f5d4;
+      text-shadow: 0 0 15px #00f5d4;
+    }
 
-  /* Testimonios estilo 3D */
-  .testimonio {
-    background:rgba(255,255,255,0.05);
-    border-left:4px solid #00f5d4; margin-bottom:1rem;
-    padding:1rem; font-style:italic;
-  }
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
 
-  /* Footer */
-  footer {
-    text-align:center; padding:2rem; background:rgba(0,0,0,0.6);
-    color:#ccc; margin-top:3rem; backdrop-filter:blur(5px);
-  }
+    main {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+      padding: 3rem;
+      max-width: 1100px;
+      margin: auto;
+    }
 
-  /* Audio control no visible */
-  audio { display:none; }
+    section {
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+      animation: fadeInCard 1s ease forwards;
+    }
 
-  /* Responsive nav */
-  @media(max-width:600px){
-    nav { flex-direction:column; gap:1rem; }
-  }
-</style>
+    @keyframes fadeInCard {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    section h2 {
+      color: #00f5d4;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      font-size: 1.6rem;
+    }
+
+    section h2 i {
+      margin-right: 0.5rem;
+    }
+
+    ul li {
+      margin-left: 1.5rem;
+      line-height: 1.8;
+    }
+
+    .button {
+      background: linear-gradient(135deg, #00f5d4, #00b3a4);
+      color: white;
+      padding: 0.8rem 2rem;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 1rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #00f5d4;
+    }
+
+    .testimonio {
+      background: rgba(255,255,255,0.05);
+      border-left: 4px solid #00f5d4;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      font-style: italic;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: #ccc;
+      background-color: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(5px);
+      margin-top: 3rem;
+    }
+
+    audio {
+      display: none;
+    }
+
+    @media screen and (max-width: 768px) {
+      main {
+        padding: 1rem;
+      }
+      section {
+        padding: 1.5rem;
+      }
+      header img {
+        width: 100px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!-- Loading -->
-  <div id="loader"><div></div></div>
-
-  <!-- Sonido clic -->
-  <audio id="click-sound" src="click.mp3"></audio>
-
   <header>
-    <div class="logo"><i class="fas fa-terminal"></i> Black Echo</div>
-    <nav>
-      <a href="#info">Proyecto</a>
-      <a href="#features">Características</a>
-      <a href="#support">Soporte</a>
-      <a href="#testimonials">Testimonios</a>
-      <a href="#download">Descargar</a>
-      <a href="#faq">FAQ</a>
-    </nav>
+    <img src="https://srv-store5.gofile.io/download/vxmopU/blackecho.webp" alt="Logo Black Echo">
+    <h1>Black Echo</h1>
   </header>
 
   <main>
-    <section id="info">
+    <section>
       <h2><i class="fas fa-info-circle"></i> Acerca del Proyecto</h2>
-      <p>Black Echo es un ejecutor de scripts para Roblox diseñado con sigilo y alto rendimiento. Nuestro proyecto más avanzado hasta la fecha.</p>
+      <p>Black Echo es un ejecutor de scripts para Roblox diseñado con sigilo, estabilidad y rendimiento superior. Un proyecto serio y en constante mejora.</p>
     </section>
-    <section id="features">
+
+    <section>
       <h2><i class="fas fa-tools"></i> Características</h2>
       <ul>
-        <li>Interfaz moderna y minimalista</li>
-        <li>Sistema antidetención y rendimiento optimizado</li>
-        <li>Integración con API propia</li>
-        <li>Diseño enfocado al usuario</li>
+        <li>Diseño moderno y dark neón</li>
+        <li>Interfaz optimizada con ejecución instantánea</li>
+        <li>Compatible con APIs externas</li>
+        <li>Antidetención y seguridad avanzada</li>
       </ul>
     </section>
-    <section id="support">
+
+    <section>
       <h2><i class="fas fa-user-shield"></i> Soporte Técnico</h2>
-      <p>Nuestro equipo está disponible para ayudarte con cualquier problema técnico que tengas.</p>
+      <p>¿Tienes problemas técnicos? Nuestro equipo de soporte está disponible para ayudarte en cada paso.</p>
     </section>
-    <section id="testimonials">
+
+    <section>
       <h2><i class="fas fa-comments"></i> Testimonios</h2>
-      <div class="testimonio">"Black Echo ha elevado mi juego a otro nivel. Súper recomendado." – Usuario A</div>
-      <div class="testimonio">"Estable, rápido y confiable. ¡Funciona perfecto!" – Usuario B</div>
+      <div class="testimonio">"Un ejecutor bellísimo, estable y veloz. Me encanta el diseño neon." – Usuario A</div>
+      <div class="testimonio">"De lo mejor que he probado. Black Echo es simplemente otro nivel." – Usuario B</div>
     </section>
-    <section id="download">
+
+    <section>
       <h2><i class="fas fa-download"></i> Descarga</h2>
+      <p>Haz clic para descargar Black Echo y comenzar a usarlo ahora mismo:</p>
       <a href="https://gofile.io/d/5717l3" class="button" target="_blank">Descargar Black Echo</a>
-    </section>
-    <section id="faq">
-      <h2><i class="fas fa-question-circle"></i> FAQ</h2>
-      <ul>
-        <li><strong>¿Es seguro?</strong> Sí, diseñado para evitar detección y dañar cuentas.</li>
-        <li><strong>¿Se actualiza?</strong> Recibe actualizaciones periódicas.</li>
-        <li><strong>¿Scripts incluidos?</strong> Compatible con los más populares.</li>
-      </ul>
     </section>
   </main>
 
   <footer>
-    © 2025 Black Echo. Todos los derechos reservados.
+    <p>© 2025 Black Echo. Todos los derechos reservados.</p>
   </footer>
 
-  <!-- Música / Sonido -->
-  <audio autoplay loop id="bg-music">
-    <source src="Fondo_animado_PARTICULAS.mp3" type="audio/mpeg">
+  <!-- Música de fondo -->
+  <audio autoplay loop>
+    <source src="Fondo animado BLANCO Y NEGRO (PARTICULAS) - BLACK AND WHITE PARTICLES animated background - OBS - HD - Fondos Animados.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio.
   </audio>
-
-  <script>
-    // Loader fade-out
-    window.onload = () => {
-      document.getElementById('loader').style.opacity = 0;
-      setTimeout(_=>document.getElementById('loader').remove(),600);
-    };
-    // Click sound
-    document.querySelectorAll('a, .button').forEach(el => {
-      el.addEventListener('click',()=> document.getElementById('click-sound').play());
-    });
-    // Volume fade-in
-    const music = document.getElementById('bg-music');
-    music.volume=0;
-    window.setTimeout(()=>{
-      const fade = setInterval(()=>{
-        if(music.volume<0.5) music.volume+=0.01;
-        else clearInterval(fade);
-      },100);
-    },500);
-  </script>
 </body>
 </html>
+
