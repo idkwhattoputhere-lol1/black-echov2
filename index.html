@@ -6,33 +6,20 @@
   <title>Black Echo Executor</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       font-family: 'Orbitron', sans-serif;
       background: #000;
       color: #fff;
       overflow-x: hidden;
-      animation: enter3d 2s ease;
-      perspective: 1200px;
+      animation: loadIn 2s ease-in-out forwards;
+      transform: perspective(1000px) rotateX(8deg);
     }
 
-    @keyframes enter3d {
-      from {
-        transform: rotateX(10deg) scale(0.95);
-        opacity: 0;
-      }
+    @keyframes loadIn {
       to {
-        transform: rotateX(0) scale(1);
-        opacity: 1;
+        transform: perspective(1000px) rotateX(0deg);
       }
     }
 
@@ -58,26 +45,20 @@
     }
 
     header {
-      text-align: center;
-      padding: 100px 20px 60px;
-    }
-
-    h1 {
-      font-size: 3.5rem;
-      color: #0ff;
-      text-shadow: 0 0 10px #0ff, 0 0 40px #0ff;
-      transform: perspective(600px) rotateX(10deg);
-    }
-
-    nav {
-      margin-top: 20px;
       position: fixed;
       top: 0;
-      left: 0;
       width: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      padding: 10px 0;
-      z-index: 1000;
+      background: rgba(0,0,0,0.8);
+      padding: 20px 0;
+      text-align: center;
+      z-index: 100;
+      box-shadow: 0 0 15px #0ff5;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      color: #0ff;
+      text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
     }
 
     nav a {
@@ -85,37 +66,59 @@
       color: #fff;
       text-decoration: none;
       font-weight: bold;
-      transition: transform 0.3s ease, text-shadow 0.3s;
-      display: inline-block;
+      transition: 0.3s;
     }
 
     nav a:hover {
-      transform: scale(1.1);
-      text-shadow: 0 0 5px #0ff, 0 0 15px #0ff;
+      color: #0ff;
+      text-shadow: 0 0 10px #0ff;
+    }
+
+    .close-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      color: #0ff;
+      font-size: 20px;
+      background: transparent;
+      border: 2px solid #0ff;
+      border-radius: 10px;
+      padding: 5px 10px;
+      cursor: pointer;
+      z-index: 101;
+      box-shadow: 0 0 10px #0ff;
+    }
+
+    .close-btn:hover {
+      background: #0ff;
+      color: #000;
     }
 
     section {
       max-width: 900px;
-      margin: 80px auto;
-      padding: 50px 30px;
+      margin: 100px auto 50px;
+      padding: 40px 30px;
       background: #0a0a0a;
       border-radius: 20px;
-      box-shadow: 0 0 40px #0ff3;
-      transform: perspective(800px) rotateY(2deg);
+      box-shadow: 0 0 40px #0ff4;
+      animation: fadeInUp 1.5s ease;
+      transform: perspective(800px) rotateY(1deg);
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     section h2 {
       color: #0ff;
       text-shadow: 0 0 15px #0ff;
       margin-bottom: 20px;
-      transform: perspective(800px) rotateX(5deg);
     }
 
-    ul li {
-      margin: 10px 0;
-    }
+    ul li { margin: 10px 0; }
 
-    .button {
+    .particle-button {
       position: relative;
       display: inline-block;
       margin-top: 15px;
@@ -123,48 +126,29 @@
       color: #000;
       background: #0ff;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       text-decoration: none;
       font-weight: bold;
-      box-shadow: 0 0 20px #0ff;
       overflow: hidden;
-      z-index: 1;
+      box-shadow: 0 0 20px #0ff;
     }
 
-    .button::before {
+    .particle-button::after {
       content: '';
       position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(0,255,255,0.4) 0%, transparent 70%);
-      animation: particles 1.5s infinite linear;
-      z-index: -1;
+      top: -10px;
+      left: -10px;
+      width: 130%;
+      height: 130%;
+      background: radial-gradient(circle, #0ff6 20%, transparent 70%);
+      animation: pulse 1.5s infinite;
+      opacity: 0.2;
     }
 
-    @keyframes particles {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(50px, 50px); }
-    }
-
-    .close-button {
-      position: fixed;
-      top: 10px;
-      right: 15px;
-      background: #0ff;
-      color: #000;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 0 15px #0ff;
-      z-index: 1001;
-    }
-
-    .close-button:hover {
-      background: #0cc;
+    @keyframes pulse {
+      0% { transform: scale(0.9); opacity: 0.2; }
+      50% { transform: scale(1.1); opacity: 0.4; }
+      100% { transform: scale(0.9); opacity: 0.2; }
     }
 
     footer {
@@ -173,14 +157,13 @@
       font-size: 0.9rem;
       background: rgba(0, 0, 0, 0.5);
       border-top: 1px solid #0ff3;
-      transform: perspective(600px) rotateX(3deg);
     }
   </style>
 </head>
 <body>
   <div id="loader">Cargando...</div>
 
-  <button class="close-button" onclick="window.close()">Cerrar</button>
+  <button class="close-btn" onclick="alert('No puedes cerrar Black Echo desde aquí 😎');">✕</button>
 
   <header>
     <h1>Black Echo Executor</h1>
@@ -219,7 +202,7 @@
   <section id="descargar">
     <h2>Descargar</h2>
     <p>Haz clic en el botón para descargar la última versión:</p>
-    <a class="button" href="#" onclick="alert('Pronto disponible');">⬇ Descargar</a>
+    <a class="particle-button" href="https://www.mediafire.com/file/xsehfrovenlgqql/Black+Echo.zip/file" target="_blank">⬇ Descargar</a>
   </section>
 
   <section id="creditos">
