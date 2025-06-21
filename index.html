@@ -71,6 +71,13 @@
 
     nav {
       margin-top: 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 10px 0;
+      z-index: 1000;
     }
 
     nav a {
@@ -89,7 +96,7 @@
 
     section {
       max-width: 900px;
-      margin: 50px auto;
+      margin: 80px auto;
       padding: 50px 30px;
       background: #0a0a0a;
       border-radius: 20px;
@@ -137,12 +144,27 @@
     }
 
     @keyframes particles {
-      0% {
-        transform: translate(0, 0);
-      }
-      100% {
-        transform: translate(50px, 50px);
-      }
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
+
+    .close-button {
+      position: fixed;
+      top: 10px;
+      right: 15px;
+      background: #0ff;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 15px #0ff;
+      z-index: 1001;
+    }
+
+    .close-button:hover {
+      background: #0cc;
     }
 
     footer {
@@ -156,7 +178,9 @@
   </style>
 </head>
 <body>
-  <div id="loader">Cargando Black Echo...</div>
+  <div id="loader">Cargando...</div>
+
+  <button class="close-button" onclick="window.close()">Cerrar</button>
 
   <header>
     <h1>Black Echo Executor</h1>
