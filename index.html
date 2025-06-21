@@ -18,28 +18,22 @@
 
     body {
       font-family: 'Orbitron', sans-serif;
-      background: url('https://srv-store1.gofile.io/download/vxmopU/Black%20Echo%20Bg.jpg') center center no-repeat fixed;
-      background-size: cover;
-      color: #ffffff;
+      background: #000;
+      color: #fff;
       overflow-x: hidden;
+      animation: enter3d 2s ease;
+      perspective: 1200px;
     }
 
-    ::-webkit-scrollbar {
-      width: 10px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #0ff;
-      border-radius: 10px;
-    }
-
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.75);
-      z-index: -1;
+    @keyframes enter3d {
+      from {
+        transform: rotateX(10deg) scale(0.95);
+        opacity: 0;
+      }
+      to {
+        transform: rotateX(0) scale(1);
+        opacity: 1;
+      }
     }
 
     #loader {
@@ -66,19 +60,13 @@
     header {
       text-align: center;
       padding: 100px 20px 60px;
-      animation: fadeIn 2s ease-in-out;
     }
 
     h1 {
       font-size: 3.5rem;
       color: #0ff;
-      text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
-      animation: glitch 2s infinite;
-    }
-
-    @keyframes glitch {
-      0%, 100% { text-shadow: 0 0 10px #0ff, 0 0 20px #0ff; }
-      50% { text-shadow: 0 0 10px #f0f, 0 0 20px #0ff; }
+      text-shadow: 0 0 10px #0ff, 0 0 40px #0ff;
+      transform: perspective(600px) rotateX(10deg);
     }
 
     nav {
@@ -90,44 +78,30 @@
       color: #fff;
       text-decoration: none;
       font-weight: bold;
-      position: relative;
+      transition: transform 0.3s ease, text-shadow 0.3s;
+      display: inline-block;
     }
 
-    nav a::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 2px;
-      background: #0ff;
-      left: 0;
-      bottom: -5px;
-      transition: 0.3s;
-    }
-
-    nav a:hover::after {
-      width: 100%;
+    nav a:hover {
+      transform: scale(1.1);
+      text-shadow: 0 0 5px #0ff, 0 0 15px #0ff;
     }
 
     section {
       max-width: 900px;
       margin: 50px auto;
       padding: 50px 30px;
-      background: rgba(0, 0, 0, 0.6);
+      background: #0a0a0a;
       border-radius: 20px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 0 25px #0ff2;
-      animation: fadeInUp 1.5s ease;
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+      box-shadow: 0 0 40px #0ff3;
+      transform: perspective(800px) rotateY(2deg);
     }
 
     section h2 {
       color: #0ff;
-      text-shadow: 0 0 10px #0ff;
+      text-shadow: 0 0 15px #0ff;
       margin-bottom: 20px;
+      transform: perspective(800px) rotateX(5deg);
     }
 
     ul li {
@@ -135,6 +109,7 @@
     }
 
     .button {
+      position: relative;
       display: inline-block;
       margin-top: 15px;
       padding: 15px 30px;
@@ -145,12 +120,29 @@
       text-decoration: none;
       font-weight: bold;
       box-shadow: 0 0 20px #0ff;
-      transition: all 0.3s ease;
+      overflow: hidden;
+      z-index: 1;
     }
 
-    .button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 35px #0ff;
+    .button::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(0,255,255,0.4) 0%, transparent 70%);
+      animation: particles 1.5s infinite linear;
+      z-index: -1;
+    }
+
+    @keyframes particles {
+      0% {
+        transform: translate(0, 0);
+      }
+      100% {
+        transform: translate(50px, 50px);
+      }
     }
 
     footer {
@@ -159,12 +151,12 @@
       font-size: 0.9rem;
       background: rgba(0, 0, 0, 0.5);
       border-top: 1px solid #0ff3;
+      transform: perspective(600px) rotateX(3deg);
     }
   </style>
 </head>
 <body>
   <div id="loader">Cargando Black Echo...</div>
-  <div class="overlay"></div>
 
   <header>
     <h1>Black Echo Executor</h1>
@@ -179,16 +171,16 @@
 
   <section id="inicio">
     <h2>Bienvenido</h2>
-    <p>Black Echo es el ejecutor más avanzado y sigiloso para Roblox. Potente, modular y creado para ofrecer una experiencia profesional.</p>
+    <p>Black Echo es un ejecutor potente, estable y con diseño moderno. Perfecto para quienes buscan control completo sobre sus scripts de Roblox.</p>
   </section>
 
   <section id="caracteristicas">
     <h2>Características</h2>
     <ul>
-      <li>✅ Inyección con Velocity o Xeno</li>
-      <li>🧠 UI moderna con pestañas infinitas</li>
-      <li>📜 Soporte para scripts OP</li>
-      <li>🕵️ 100% indetectable (95% SUNC)</li>
+      <li>🎯 Soporte para scripts OP</li>
+      <li>⚡ Rápido y liviano</li>
+      <li>🕵️ Alta evasión contra detección</li>
+      <li>🧊 UI elegante y fluida</li>
     </ul>
   </section>
 
@@ -208,7 +200,7 @@
 
   <section id="creditos">
     <h2>Créditos</h2>
-    <p>Desarrollado por el equipo de Black Echo. Gracias por tu apoyo y confianza.</p>
+    <p>Proyecto desarrollado por el equipo de Black Echo. Gracias por tu apoyo.</p>
   </section>
 
   <footer>
@@ -216,7 +208,7 @@
   </footer>
 
   <audio autoplay loop id="bgmusic">
-    <source src="https://cdn.pixabay.com/audio/2022/03/03/audio_a75ca63405.mp3" type="audio/mpeg">
+    <source src="https://cdn.pixabay.com/audio/2022/03/03/audio_a75ca63405.mp3" type="audio/mpeg" />
   </audio>
 
   <script>
