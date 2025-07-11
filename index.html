@@ -6,15 +6,35 @@
   <title>Black Echo Executor</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet" />
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       font-family: 'Orbitron', sans-serif;
-      background: #000;
+      background: url('https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+      background-size: cover;
       color: #fff;
       overflow-x: hidden;
       animation: loadIn 2s ease-in-out forwards;
       transform: perspective(1000px) rotateX(8deg);
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: -1;
     }
 
     @keyframes loadIn {
@@ -46,7 +66,7 @@
 
     header {
       width: 100%;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0, 0, 0, 0.7);
       padding: 30px 0 20px;
       text-align: center;
       box-shadow: 0 0 15px #0ff5;
@@ -99,16 +119,22 @@
       max-width: 900px;
       margin: 50px auto;
       padding: 40px 30px;
-      background: #0a0a0a;
+      background: rgba(10, 10, 10, 0.85);
       border-radius: 20px;
       box-shadow: 0 0 40px #0ff4;
       animation: fadeInUp 1.5s ease;
-      transform: perspective(800px) rotateY(1deg);
+      backdrop-filter: blur(10px);
     }
 
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     section h2 {
@@ -117,7 +143,9 @@
       margin-bottom: 20px;
     }
 
-    ul li { margin: 10px 0; }
+    ul li {
+      margin: 10px 0;
+    }
 
     .particle-button {
       position: relative;
@@ -131,7 +159,13 @@
       text-decoration: none;
       font-weight: bold;
       overflow: hidden;
-      box-shadow: 0 0 20px #0ff;
+      box-shadow: 0 0 20px #0ff, 0 5px 15px #0005;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .particle-button:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 30px #0ff, 0 10px 20px #0005;
     }
 
     .particle-button::after {
@@ -147,9 +181,18 @@
     }
 
     @keyframes pulse {
-      0% { transform: scale(0.9); opacity: 0.2; }
-      50% { transform: scale(1.1); opacity: 0.4; }
-      100% { transform: scale(0.9); opacity: 0.2; }
+      0% {
+        transform: scale(0.9);
+        opacity: 0.2;
+      }
+      50% {
+        transform: scale(1.1);
+        opacity: 0.4;
+      }
+      100% {
+        transform: scale(0.9);
+        opacity: 0.2;
+      }
     }
 
     footer {
@@ -158,6 +201,21 @@
       font-size: 0.9rem;
       background: rgba(0, 0, 0, 0.5);
       border-top: 1px solid #0ff3;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 1.8rem;
+      }
+
+      nav a {
+        display: block;
+        margin: 10px 0;
+      }
+
+      section {
+        padding: 30px 20px;
+      }
     }
   </style>
 </head>
@@ -193,17 +251,16 @@
     </ul>
   </section>
 
-<section id="changelog">
-  <h2>Changelog</h2>
-  <ul>
-    <li>🔧 Optimización general</li>
-    <li>🛡️ Mejoras en evasión de detección</li>
-    <li>🌙 Se eliminaron los temas innecesarios, solo quedan Oscuro y Neón</li>
-    <li>🎨 Tema oscuro completamente rediseñado incluyendo top bar</li>
-    <li>📁 Se actualizó el enlace de descarga</li>
-  </ul>
-</section>
-
+  <section id="changelog">
+    <h2>Changelog</h2>
+    <ul>
+      <li>🔧 Optimización general</li>
+      <li>🛡️ Mejoras en evasión de detección</li>
+      <li>🌙 Se eliminaron los temas innecesarios</li>
+      <li>🎨 Rediseño completo de tema oscuro</li>
+      <li>📁 Nuevo enlace de descarga</li>
+    </ul>
+  </section>
 
   <section id="descargar">
     <h2>Descargar</h2>
