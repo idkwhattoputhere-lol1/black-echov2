@@ -11,15 +11,17 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
 
-    body {
+    body.dark {
       font-family: 'Orbitron', sans-serif;
       background: url('https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
       background-size: cover;
-      background-attachment: fixed;
       color: #fff;
-      overflow-x: hidden;
-      animation: loadIn 2s ease-in-out forwards;
-      transform: perspective(1000px) rotateX(8deg);
+    }
+
+    body.light {
+      font-family: 'Orbitron', sans-serif;
+      background: #f0f0f0;
+      color: #111;
     }
 
     body::before {
@@ -42,31 +44,26 @@
       z-index: -2;
     }
 
-    @keyframes loadIn {
-      to {
-        transform: perspective(1000px) rotateX(0deg);
-      }
+    section {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      max-width: 900px;
+      margin: 50px auto;
+      padding: 40px 30px;
+      background: rgba(10, 10, 10, 0.85);
+      border-radius: 20px;
+      box-shadow: 0 0 40px #0ff4;
+      backdrop-filter: blur(10px);
     }
 
-    #loader {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #0ff;
-      font-size: 2rem;
-      z-index: 9999;
-      animation: fadeOut 2s ease 2s forwards;
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    @keyframes fadeOut {
-      to {
-        opacity: 0;
-        visibility: hidden;
-      }
+    section:hover {
+      box-shadow: 0 0 60px #0ffb;
     }
 
     header {
@@ -105,63 +102,6 @@
       text-shadow: 0 0 10px #0ff;
     }
 
-    .close-btn {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      color: #0ff;
-      font-size: 20px;
-      background: transparent;
-      border: 2px solid #0ff;
-      border-radius: 10px;
-      padding: 5px 10px;
-      cursor: pointer;
-      z-index: 101;
-      box-shadow: 0 0 10px #0ff;
-    }
-
-    .close-btn:hover {
-      background: #0ff;
-      color: #000;
-    }
-
-    section {
-      max-width: 900px;
-      margin: 50px auto;
-      padding: 40px 30px;
-      background: rgba(10, 10, 10, 0.85);
-      border-radius: 20px;
-      box-shadow: 0 0 40px #0ff4;
-      animation: fadeInUp 1.5s ease;
-      backdrop-filter: blur(10px);
-      transition: box-shadow 0.3s ease;
-    }
-
-    section:hover {
-      box-shadow: 0 0 60px #0ffb;
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    section h2 {
-      color: #0ff;
-      text-shadow: 0 0 15px #0ff;
-      margin-bottom: 20px;
-    }
-
-    ul li {
-      margin: 10px 0;
-    }
-
     .particle-button {
       position: relative;
       display: inline-block;
@@ -183,22 +123,24 @@
       box-shadow: 0 0 30px #0ff, 0 10px 20px #0005;
     }
 
-    .particle-button::after {
-      content: '';
-      position: absolute;
-      top: -10px;
-      left: -10px;
-      width: 130%;
-      height: 130%;
-      background: radial-gradient(circle, #0ff6 20%, transparent 70%);
-      animation: pulse 1.5s infinite;
-      opacity: 0.2;
+    .close-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      color: #0ff;
+      font-size: 20px;
+      background: transparent;
+      border: 2px solid #0ff;
+      border-radius: 10px;
+      padding: 5px 10px;
+      cursor: pointer;
+      z-index: 101;
+      box-shadow: 0 0 10px #0ff;
     }
 
-    @keyframes pulse {
-      0% { transform: scale(0.9); opacity: 0.2; }
-      50% { transform: scale(1.1); opacity: 0.4; }
-      100% { transform: scale(0.9); opacity: 0.2; }
+    .close-btn:hover {
+      background: #0ff;
+      color: #000;
     }
 
     footer {
@@ -209,33 +151,29 @@
       border-top: 1px solid #0ff3;
     }
 
-    #music-toggle {
+    #theme-toggle, #music-toggle {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background: rgba(0,0,0,0.6);
-      border: 2px solid #0ff;
+      background: rgba(0, 0, 0, 0.6);
       color: #0ff;
+      border: 2px solid #0ff;
       border-radius: 50%;
+      font-size: 18px;
       padding: 12px;
       cursor: pointer;
-      font-size: 18px;
       box-shadow: 0 0 10px #0ff;
       z-index: 999;
+      margin-left: 10px;
     }
 
-    @media (max-width: 768px) {
-      header h1 { font-size: 1.8rem; }
-      nav a { display: block; margin: 10px 0; }
-      section { padding: 30px 20px; }
-    }
+    #theme-toggle { right: 70px; }
   </style>
 </head>
-<body>
+<body class="dark">
   <div id="tsparticles"></div>
   <div id="loader">Cargando...</div>
   <button class="close-btn" onclick="alert('No puedes cerrar Black Echo desde aquí 😎');">✕</button>
-
   <header>
     <h1>Black Echo Executor</h1>
     <nav>
@@ -293,12 +231,14 @@
     <source src="https://cdn.pixabay.com/audio/2022/03/03/audio_a75ca63405.mp3" type="audio/mpeg" />
   </audio>
 
-  <button id="music-toggle" onclick="toggleMusic()">🔊</button>
+  <button id="music-toggle">🔊</button>
+  <button id="theme-toggle">🌙</button>
 
   <script>
     window.addEventListener('DOMContentLoaded', () => {
       const bg = document.getElementById('bgmusic');
       bg.volume = 0.08;
+
       const titleTexts = ["Black Echo Executor", "Roblox Injector Pro", "Black Echo - Estable & Potente"];
       let i = 0;
       setInterval(() => {
@@ -321,18 +261,37 @@
       });
     });
 
-    function toggleMusic() {
-      const bg = document.getElementById('bgmusic');
-      const btn = document.getElementById('music-toggle');
-      if (bg.paused) {
-        bg.play();
-        btn.textContent = '🔊';
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('section').forEach(section => {
+      observer.observe(section);
+    });
+
+    const themeToggle = document.getElementById('theme-toggle');
+    themeToggle.addEventListener('click', () => {
+      const body = document.body;
+      body.classList.toggle('light');
+      body.classList.toggle('dark');
+      themeToggle.textContent = body.classList.contains('light') ? '🌞' : '🌙';
+    });
+
+    const musicToggle = document.getElementById('music-toggle');
+    const bgMusic = document.getElementById('bgmusic');
+    musicToggle.addEventListener('click', () => {
+      if (bgMusic.paused) {
+        bgMusic.play();
+        musicToggle.textContent = '🔊';
       } else {
-        bg.pause();
-        btn.textContent = '🔇';
+        bgMusic.pause();
+        musicToggle.textContent = '🔇';
       }
-    }
+    });
   </script>
 </body>
 </html>
-
