@@ -6,21 +6,16 @@
   <title id="dynamic-title">Black Echo Executor</title>
   <link rel="icon" type="image/png" href="b6e7a8e7-b346-4b57-93db-0974db869ed5.png">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@3/tsparticles.bundle.min.js"></script>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Orbitron', sans-serif;
       background: url('https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
       background-size: cover;
+      background-attachment: fixed;
       color: #fff;
       overflow-x: hidden;
       animation: loadIn 2s ease-in-out forwards;
@@ -36,6 +31,15 @@
       height: 100%;
       background: rgba(0, 0, 0, 0.75);
       z-index: -1;
+    }
+
+    #tsparticles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
     }
 
     @keyframes loadIn {
@@ -76,7 +80,12 @@
     header h1 {
       font-size: 2.5rem;
       color: #0ff;
-      text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+      animation: neonPulse 3s infinite ease-in-out;
+    }
+
+    @keyframes neonPulse {
+      0%, 100% { text-shadow: 0 0 10px #0ff; }
+      50% { text-shadow: 0 0 20px #0ff; }
     }
 
     nav {
@@ -125,6 +134,11 @@
       box-shadow: 0 0 40px #0ff4;
       animation: fadeInUp 1.5s ease;
       backdrop-filter: blur(10px);
+      transition: box-shadow 0.3s ease;
+    }
+
+    section:hover {
+      box-shadow: 0 0 60px #0ffb;
     }
 
     @keyframes fadeInUp {
@@ -182,18 +196,9 @@
     }
 
     @keyframes pulse {
-      0% {
-        transform: scale(0.9);
-        opacity: 0.2;
-      }
-      50% {
-        transform: scale(1.1);
-        opacity: 0.4;
-      }
-      100% {
-        transform: scale(0.9);
-        opacity: 0.2;
-      }
+      0% { transform: scale(0.9); opacity: 0.2; }
+      50% { transform: scale(1.1); opacity: 0.4; }
+      100% { transform: scale(0.9); opacity: 0.2; }
     }
 
     footer {
@@ -204,25 +209,31 @@
       border-top: 1px solid #0ff3;
     }
 
+    #music-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(0,0,0,0.6);
+      border: 2px solid #0ff;
+      color: #0ff;
+      border-radius: 50%;
+      padding: 12px;
+      cursor: pointer;
+      font-size: 18px;
+      box-shadow: 0 0 10px #0ff;
+      z-index: 999;
+    }
+
     @media (max-width: 768px) {
-      header h1 {
-        font-size: 1.8rem;
-      }
-
-      nav a {
-        display: block;
-        margin: 10px 0;
-      }
-
-      section {
-        padding: 30px 20px;
-      }
+      header h1 { font-size: 1.8rem; }
+      nav a { display: block; margin: 10px 0; }
+      section { padding: 30px 20px; }
     }
   </style>
 </head>
 <body>
+  <div id="tsparticles"></div>
   <div id="loader">Cargando...</div>
-
   <button class="close-btn" onclick="alert('No puedes cerrar Black Echo desde aquí 😎');">✕</button>
 
   <header>
@@ -282,18 +293,46 @@
     <source src="https://cdn.pixabay.com/audio/2022/03/03/audio_a75ca63405.mp3" type="audio/mpeg" />
   </audio>
 
+  <button id="music-toggle" onclick="toggleMusic()">🔊</button>
+
   <script>
     window.addEventListener('DOMContentLoaded', () => {
       const bg = document.getElementById('bgmusic');
       bg.volume = 0.08;
-
       const titleTexts = ["Black Echo Executor", "Roblox Injector Pro", "Black Echo - Estable & Potente"];
       let i = 0;
       setInterval(() => {
         document.title = titleTexts[i % titleTexts.length];
         i++;
       }, 2500);
+
+      tsParticles.load("tsparticles", {
+        background: { color: { value: "transparent" } },
+        fpsLimit: 60,
+        particles: {
+          color: { value: "#0ff" },
+          links: { enable: true, color: "#0ff", opacity: 0.3 },
+          move: { enable: true, speed: 0.5 },
+          number: { value: 35 },
+          opacity: { value: 0.4 },
+          shape: { type: "circle" },
+          size: { value: 2 }
+        }
+      });
     });
+
+    function toggleMusic() {
+      const bg = document.getElementById('bgmusic');
+      const btn = document.getElementById('music-toggle');
+      if (bg.paused) {
+        bg.play();
+        btn.textContent = '🔊';
+      } else {
+        bg.pause();
+        btn.textContent = '🔇';
+      }
+    }
   </script>
 </body>
 </html>
+
