@@ -8,87 +8,60 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@3/tsparticles.bundle.min.js"></script>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-
-    body.dark {
-      font-family: 'Orbitron', sans-serif;
-      background: url('https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
-      background-size: cover;
-      color: #fff;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-
-    body.light {
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
       font-family: 'Orbitron', sans-serif;
-      background: #f0f0f0;
+      background: #000;
+      color: #fff;
+      overflow-x: hidden;
+      transition: background 0.3s, color 0.3s;
+    }
+    body.light {
+      background: #e0e0e0;
       color: #111;
     }
-
-    body::before {
-      content: '';
+    #loader {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.75);
-      z-index: -1;
-    }
-
-    #tsparticles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-    }
-
-    section {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-      max-width: 900px;
-      margin: 50px auto;
-      padding: 40px 30px;
-      background: rgba(10, 10, 10, 0.85);
-      border-radius: 20px;
-      box-shadow: 0 0 40px #0ff4;
-      backdrop-filter: blur(10px);
-    }
-
-    section.visible {
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      color: #0ff;
+      z-index: 10000;
       opacity: 1;
-      transform: translateY(0);
+      transition: opacity 0.5s ease;
     }
-
-    section:hover {
-      box-shadow: 0 0 60px #0ffb;
+    body.loaded #loader {
+      opacity: 0;
+      pointer-events: none;
     }
-
     header {
       width: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 30px 0 20px;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 20px 0;
       text-align: center;
       box-shadow: 0 0 15px #0ff5;
     }
-
     header h1 {
       font-size: 2.5rem;
       color: #0ff;
-      animation: neonPulse 3s infinite ease-in-out;
+      text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
     }
-
-    @keyframes neonPulse {
-      0%, 100% { text-shadow: 0 0 10px #0ff; }
-      50% { text-shadow: 0 0 20px #0ff; }
-    }
-
     nav {
       margin-top: 10px;
     }
-
     nav a {
       margin: 0 15px;
       color: #fff;
@@ -96,12 +69,51 @@
       font-weight: bold;
       transition: 0.3s;
     }
-
     nav a:hover {
       color: #0ff;
       text-shadow: 0 0 10px #0ff;
     }
-
+    .close-btn, #theme-toggle, #music-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      margin-left: 10px;
+      background: #000;
+      color: #0ff;
+      border: 2px solid #0ff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #0ff;
+      transition: background 0.3s, color 0.3s;
+    }
+    .close-btn:hover, #theme-toggle:hover, #music-toggle:hover {
+      background: #0ff;
+      color: #000;
+    }
+    section {
+      max-width: 900px;
+      margin: 50px auto;
+      padding: 40px 30px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      box-shadow: 0 0 40px #0ff4;
+      transition: background 0.3s;
+    }
+    body.light section {
+      background: rgba(255, 255, 255, 0.7);
+      box-shadow: 0 0 20px #00ffff33;
+    }
+    section h2 {
+      color: #0ff;
+      text-shadow: 0 0 15px #0ff;
+      margin-bottom: 20px;
+    }
+    ul li {
+      margin: 10px 0;
+    }
     .particle-button {
       position: relative;
       display: inline-block;
@@ -114,35 +126,24 @@
       text-decoration: none;
       font-weight: bold;
       overflow: hidden;
-      box-shadow: 0 0 20px #0ff, 0 5px 15px #0005;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 0 20px #0ff;
     }
-
-    .particle-button:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 0 30px #0ff, 0 10px 20px #0005;
+    .particle-button::after {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      width: 130%;
+      height: 130%;
+      background: radial-gradient(circle, #0ff6 20%, transparent 70%);
+      animation: pulse 1.5s infinite;
+      opacity: 0.2;
     }
-
-    .close-btn {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      color: #0ff;
-      font-size: 20px;
-      background: transparent;
-      border: 2px solid #0ff;
-      border-radius: 10px;
-      padding: 5px 10px;
-      cursor: pointer;
-      z-index: 101;
-      box-shadow: 0 0 10px #0ff;
+    @keyframes pulse {
+      0% { transform: scale(0.9); opacity: 0.2; }
+      50% { transform: scale(1.1); opacity: 0.4; }
+      100% { transform: scale(0.9); opacity: 0.2; }
     }
-
-    .close-btn:hover {
-      background: #0ff;
-      color: #000;
-    }
-
     footer {
       text-align: center;
       padding: 40px 20px;
@@ -150,30 +151,16 @@
       background: rgba(0, 0, 0, 0.5);
       border-top: 1px solid #0ff3;
     }
-
-    #theme-toggle, #music-toggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(0, 0, 0, 0.6);
-      color: #0ff;
-      border: 2px solid #0ff;
-      border-radius: 50%;
-      font-size: 18px;
-      padding: 12px;
-      cursor: pointer;
-      box-shadow: 0 0 10px #0ff;
-      z-index: 999;
-      margin-left: 10px;
-    }
-
-    #theme-toggle { right: 70px; }
   </style>
 </head>
 <body class="dark">
+  <div id="loader">Cargando Black Echo...</div>
   <div id="tsparticles"></div>
-  <div id="loader">Cargando...</div>
+
   <button class="close-btn" onclick="alert('No puedes cerrar Black Echo desde aquí 😎');">✕</button>
+  <button id="theme-toggle">🌙</button>
+  <button id="music-toggle">🔊</button>
+
   <header>
     <h1>Black Echo Executor</h1>
     <nav>
@@ -206,9 +193,9 @@
     <ul>
       <li>🔧 Optimización general</li>
       <li>🛡️ Mejoras en evasión de detección</li>
-      <li>🌙 Se eliminaron los temas innecesarios</li>
-      <li>🎨 Rediseño completo de tema oscuro</li>
-      <li>📁 Nuevo enlace de descarga</li>
+      <li>🌙 Se eliminaron los temas innecesarios, solo quedan Oscuro y Neón</li>
+      <li>🎨 Tema oscuro completamente rediseñado incluyendo top bar</li>
+      <li>📁 Se actualizó el enlace de descarga</li>
     </ul>
   </section>
 
@@ -231,67 +218,48 @@
     <source src="https://cdn.pixabay.com/audio/2022/03/03/audio_a75ca63405.mp3" type="audio/mpeg" />
   </audio>
 
-  <button id="music-toggle">🔊</button>
-  <button id="theme-toggle">🌙</button>
-
   <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      const bg = document.getElementById('bgmusic');
-      bg.volume = 0.08;
-
-      const titleTexts = ["Black Echo Executor", "Roblox Injector Pro", "Black Echo - Estable & Potente"];
-      let i = 0;
-      setInterval(() => {
-        document.title = titleTexts[i % titleTexts.length];
-        i++;
-      }, 2500);
-
-      tsParticles.load("tsparticles", {
-        background: { color: { value: "transparent" } },
-        fpsLimit: 60,
-        particles: {
-          color: { value: "#0ff" },
-          links: { enable: true, color: "#0ff", opacity: 0.3 },
-          move: { enable: true, speed: 0.5 },
-          number: { value: 35 },
-          opacity: { value: 0.4 },
-          shape: { type: "circle" },
-          size: { value: 2 }
-        }
-      });
+    window.addEventListener("load", () => {
+      document.body.classList.add("loaded");
     });
 
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.2 });
-
-    document.querySelectorAll('section').forEach(section => {
-      observer.observe(section);
-    });
-
-    const themeToggle = document.getElementById('theme-toggle');
-    themeToggle.addEventListener('click', () => {
-      const body = document.body;
-      body.classList.toggle('light');
-      body.classList.toggle('dark');
-      themeToggle.textContent = body.classList.contains('light') ? '🌞' : '🌙';
-    });
-
-    const musicToggle = document.getElementById('music-toggle');
-    const bgMusic = document.getElementById('bgmusic');
-    musicToggle.addEventListener('click', () => {
-      if (bgMusic.paused) {
-        bgMusic.play();
-        musicToggle.textContent = '🔊';
-      } else {
-        bgMusic.pause();
-        musicToggle.textContent = '🔇';
+    tsParticles.load("tsparticles", {
+      fullScreen: { enable: false },
+      particles: {
+        number: { value: 80 },
+        color: { value: "#00ffff" },
+        shape: { type: "circle" },
+        opacity: { value: 0.3 },
+        size: { value: 3 },
+        move: { enable: true, speed: 1 }
       }
     });
+
+    const toggleTheme = document.getElementById('theme-toggle');
+    toggleTheme.onclick = () => {
+      document.body.classList.toggle('light');
+      document.body.classList.toggle('dark');
+    };
+
+    const bg = document.getElementById('bgmusic');
+    const musicBtn = document.getElementById('music-toggle');
+    bg.volume = 0.08;
+    musicBtn.onclick = () => {
+      if (bg.paused) {
+        bg.play();
+        musicBtn.textContent = '🔊';
+      } else {
+        bg.pause();
+        musicBtn.textContent = '🔇';
+      }
+    };
+
+    const titles = ["Black Echo Executor", "El mejor executor de Roblox", "Descárgalo ya 🔥"];
+    let i = 0;
+    setInterval(() => {
+      document.title = titles[i % titles.length];
+      i++;
+    }, 3000);
   </script>
 </body>
 </html>
