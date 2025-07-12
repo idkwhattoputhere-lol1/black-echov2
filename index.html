@@ -1,266 +1,202 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title id="dynamic-title">Black Echo Executor</title>
-  <link rel="icon" type="image/png" href="b6e7a8e7-b346-4b57-93db-0974db869ed5.png">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/tsparticles@3/tsparticles.bundle.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Black Echo | Executor Hub</title>
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    html {
-      scroll-behavior: smooth;
-    }
     body {
-      font-family: 'Orbitron', sans-serif;
-      background: #000;
-      color: #fff;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f0f0f, #1f1f1f);
+      color: white;
       overflow-x: hidden;
-      transition: background 0.3s, color 0.3s;
     }
-    body.light {
-      background: #e0e0e0;
-      color: #111;
+
+    header {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 999;
     }
+
+    header h1 {
+      font-size: 1.5rem;
+      color: #00ffff;
+    }
+
+    .download-btn {
+      background: #00ffff;
+      border: none;
+      color: black;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .download-btn:hover {
+      transform: scale(1.05);
+    }
+
+    section {
+      padding: 100px 10% 60px;
+    }
+
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero h2 {
+      font-size: 3rem;
+      background: linear-gradient(45deg, #00ffff, #ff00ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .features, .changelog, .testimonials, .comparison {
+      display: grid;
+      gap: 30px;
+    }
+
+    .feature, .log-entry, .testimonial, .compare {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s;
+    }
+
+    .feature:hover, .log-entry:hover, .testimonial:hover {
+      transform: scale(1.03);
+    }
+
+    .testimonials {
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .testimonial {
+      display: inline-block;
+      width: 300px;
+      margin-right: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 50px 0;
+      background: #000;
+    }
+
+    /* Loading Screen */
     #loader {
       position: fixed;
-      top: 0;
-      left: 0;
       width: 100%;
       height: 100%;
       background: #000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      color: #00ffff;
       font-size: 2rem;
-      color: #0ff;
-      z-index: 10000;
-      opacity: 1;
-      transition: opacity 0.5s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
     }
-    body.loaded #loader {
-      opacity: 0;
-      pointer-events: none;
-    }
-    header {
-      width: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      padding: 20px 0;
-      text-align: center;
-      box-shadow: 0 0 15px #0ff5;
-    }
-    header h1 {
-      font-size: 2.5rem;
-      color: #0ff;
-      text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
-    }
-    nav {
-      margin-top: 10px;
-    }
-    nav a {
-      margin: 0 15px;
-      color: #fff;
-      text-decoration: none;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-    nav a:hover {
-      color: #0ff;
-      text-shadow: 0 0 10px #0ff;
-    }
-    .close-btn, #theme-toggle, #music-toggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      margin-left: 10px;
-      background: #000;
-      color: #0ff;
-      border: 2px solid #0ff;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      font-size: 18px;
-      cursor: pointer;
-      box-shadow: 0 0 10px #0ff;
-      transition: background 0.3s, color 0.3s;
-    }
-    .close-btn:hover, #theme-toggle:hover, #music-toggle:hover {
-      background: #0ff;
-      color: #000;
-    }
-    section {
-      max-width: 900px;
-      margin: 50px auto;
-      padding: 40px 30px;
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 20px;
-      box-shadow: 0 0 40px #0ff4;
-      transition: background 0.3s;
-    }
-    body.light section {
-      background: rgba(255, 255, 255, 0.7);
-      box-shadow: 0 0 20px #00ffff33;
-    }
-    section h2 {
-      color: #0ff;
-      text-shadow: 0 0 15px #0ff;
-      margin-bottom: 20px;
-    }
-    ul li {
-      margin: 10px 0;
-    }
-    .particle-button {
-      position: relative;
-      display: inline-block;
-      margin-top: 15px;
-      padding: 15px 30px;
-      color: #000;
-      background: #0ff;
-      border: none;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: bold;
-      overflow: hidden;
-      box-shadow: 0 0 20px #0ff;
-    }
-    .particle-button::after {
-      content: '';
-      position: absolute;
-      top: -10px;
-      left: -10px;
-      width: 130%;
-      height: 130%;
-      background: radial-gradient(circle, #0ff6 20%, transparent 70%);
-      animation: pulse 1.5s infinite;
-      opacity: 0.2;
-    }
-    @keyframes pulse {
-      0% { transform: scale(0.9); opacity: 0.2; }
-      50% { transform: scale(1.1); opacity: 0.4; }
-      100% { transform: scale(0.9); opacity: 0.2; }
-    }
-    footer {
-      text-align: center;
-      padding: 40px 20px;
-      font-size: 0.9rem;
-      background: rgba(0, 0, 0, 0.5);
-      border-top: 1px solid #0ff3;
+
+    audio {
+      display: none;
     }
   </style>
 </head>
-<body class="dark">
-  <div id="loader">Cargando Black Echo...</div>
-  <div id="tsparticles"></div>
+<body>
 
-  <button class="close-btn" onclick="alert('No puedes cerrar Black Echo desde aquí 😎');">✕</button>
-  <button id="theme-toggle">🌙</button>
-  <button id="music-toggle">🔊</button>
+<div id="loader">Cargando Black Echo...</div>
 
-  <header>
-    <h1>Black Echo Executor</h1>
-    <nav>
-      <a href="#inicio">Inicio</a>
-      <a href="#caracteristicas">Características</a>
-      <a href="#changelog">Changelog</a>
-      <a href="#descargar">Descargar</a>
-      <a href="#creditos">Créditos</a>
-    </nav>
-  </header>
+<header>
+  <h1>Black Echo</h1>
+  <button class="download-btn" onclick="window.location.href='descarga.exe'">Descargar</button>
+</header>
 
-  <section id="inicio">
-    <h2>Bienvenido</h2>
-    <p>Black Echo es un ejecutor potente, estable y con diseño moderno. Perfecto para quienes buscan control completo sobre sus scripts de Roblox.</p>
-  </section>
+<section class="hero" data-aos="fade-up">
+  <h2>Black Echo Executor</h2>
+  <p>El ejecutor más elegante, rápido y profesional para Roblox</p>
+</section>
 
-  <section id="caracteristicas">
-    <h2>Características</h2>
-    <ul>
-      <li>🎯 Soporte para scripts OP</li>
-      <li>⚡ Rápido y liviano</li>
-      <li>🕵️ Alta evasión contra detección</li>
-      <li>🧊 UI elegante y fluida</li>
-      <li>🌌 Tema inicial: Neon y Oscuro</li>
-    </ul>
-  </section>
+<section class="features" data-aos="fade-up">
+  <h2>⚙️ Características</h2>
+  <div class="feature">✔ Inyección rápida con bypass</div>
+  <div class="feature">✔ UI moderna y dinámica</div>
+  <div class="feature">✔ Opción entre Velocity y Xeno</div>
+  <div class="feature">✔ Auto-update con Bootstrapper</div>
+</section>
 
-  <section id="changelog">
-    <h2>Changelog</h2>
-    <ul>
-      <li>🔧 Optimización general</li>
-      <li>🛡️ Mejoras en evasión de detección</li>
-      <li>🌙 Se eliminaron los temas innecesarios, solo quedan Oscuro y Neón</li>
-      <li>🎨 Tema oscuro completamente rediseñado incluyendo top bar</li>
-      <li>📁 Se actualizó el enlace de descarga</li>
-    </ul>
-  </section>
+<section class="changelog" data-aos="fade-up">
+  <h2>📜 Cambios recientes</h2>
+  <div class="log-entry">🆕 v1.6.0 - Se agregó compatibilidad con Delta</div>
+  <div class="log-entry">🔧 v1.5.2 - Arreglado error de inyección en Windows 11</div>
+  <div class="log-entry">⚡ v1.5.0 - Mejorado el rendimiento un 20%</div>
+</section>
 
-  <section id="descargar">
-    <h2>Descargar</h2>
-    <p>Haz clic en el botón para descargar la última versión:</p>
-    <a class="particle-button" href="https://www.mediafire.com/file/v2m28w64wlwtvwj/Black+Echo.zip.zip/file" target="_blank">⬇ Descargar</a>
-  </section>
+<section class="testimonials" data-aos="fade-up">
+  <h2>💬 Opiniones de usuarios</h2>
+  <div class="testimonial">"El mejor ejecutor que he usado hasta ahora, ni Synapse me convence tanto." — JuanDev</div>
+  <div class="testimonial">"Hermosa UI y fácil de usar. Black Echo es otro nivel." — AkiraScript</div>
+  <div class="testimonial">"Rápido, eficaz y con updates constantes. 10/10." — LxrScript</div>
+</section>
 
-  <section id="creditos">
-    <h2>Créditos</h2>
-    <p>Proyecto desarrollado por el equipo de Black Echo. Gracias por tu apoyo.</p>
-  </section>
+<section class="comparison" data-aos="fade-up">
+  <h2>🤔 ¿Por qué Black Echo?</h2>
+  <div class="compare">🚀 Más rápido que JJSploit y Evon</div>
+  <div class="compare">🛡️ Menos detección por parte de Roblox</div>
+  <div class="compare">🎨 UI 100% personalizada y moderna</div>
+</section>
 
-  <footer>
-    © 2025 Black Echo. Todos los derechos reservados.
-  </footer>
+<footer>
+  <p>&copy; 2025 Black Echo - Todos los derechos reservados</p>
+  <button class="download-btn" onclick="window.location.href='descarga.exe'">Descargar</button>
+</footer>
 
-  <audio autoplay loop id="bgmusic">
-    <source src="https://cdn.pixabay.com/audio/2022/03/03/audio_a75ca63405.mp3" type="audio/mpeg" />
-  </audio>
+<audio id="bg-music" autoplay loop>
+  <source src="musica.mp3" type="audio/mpeg">
+</audio>
 
-  <script>
-    window.addEventListener("load", () => {
-      document.body.classList.add("loaded");
-    });
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
 
-    tsParticles.load("tsparticles", {
-      fullScreen: { enable: false },
-      particles: {
-        number: { value: 80 },
-        color: { value: "#00ffff" },
-        shape: { type: "circle" },
-        opacity: { value: 0.3 },
-        size: { value: 3 },
-        move: { enable: true, speed: 1 }
-      }
-    });
+  // Loading screen
+  window.addEventListener('load', () => {
+    document.getElementById('loader').style.display = 'none';
+  });
 
-    const toggleTheme = document.getElementById('theme-toggle');
-    toggleTheme.onclick = () => {
-      document.body.classList.toggle('light');
-      document.body.classList.toggle('dark');
-    };
-
-    const bg = document.getElementById('bgmusic');
-    const musicBtn = document.getElementById('music-toggle');
-    bg.volume = 0.08;
-    musicBtn.onclick = () => {
-      if (bg.paused) {
-        bg.play();
-        musicBtn.textContent = '🔊';
+  // Música fade-in
+  window.addEventListener("DOMContentLoaded", () => {
+    const audio = document.getElementById("bg-music");
+    audio.volume = 0;
+    let vol = 0;
+    const fadeIn = setInterval(() => {
+      if (vol < 0.5) {
+        vol += 0.01;
+        audio.volume = vol;
       } else {
-        bg.pause();
-        musicBtn.textContent = '🔇';
+        clearInterval(fadeIn);
       }
-    };
+    }, 200);
+  });
+</script>
 
-    const titles = ["Black Echo Executor", "El mejor executor de Roblox", "Descárgalo ya 🔥"];
-    let i = 0;
-    setInterval(() => {
-      document.title = titles[i % titles.length];
-      i++;
-    }, 3000);
-  </script>
 </body>
 </html>
-
