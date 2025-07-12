@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Black Echo Executor</title>
+  <title id="dynamic-title">Black Echo Executor</title>
+  <link rel="icon" type="image/png" href="b6e7a8e7-b346-4b57-93db-0974db869ed5.png">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet" />
   <style>
     * {
@@ -285,6 +286,13 @@
     window.addEventListener('DOMContentLoaded', () => {
       const bg = document.getElementById('bgmusic');
       bg.volume = 0.08;
+
+      const titleTexts = ["Black Echo Executor", "Roblox Injector Pro", "Black Echo - Estable & Potente"];
+      let i = 0;
+      setInterval(() => {
+        document.title = titleTexts[i % titleTexts.length];
+        i++;
+      }, 2500);
     });
   </script>
 </body>
