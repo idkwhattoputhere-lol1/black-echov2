@@ -156,7 +156,7 @@
 <section class="hero" data-aos="fade-up">
   <h2>Black Echo Executor</h2>
   <p>El ejecutor más elegante, rápido y profesional para Roblox</p>
-  <button class="download-btn" onclick="document.getElementById('bg-music').play()">▶️ Reproducir Música</button>
+  <button class="download-btn" id="musicToggleBtn">▶️ Reproducir Música</button>
 </section>
 
 <section class="features" data-aos="fade-up">
@@ -220,7 +220,6 @@
       <small>— NeoScript</small>
     </div>
   </div>
-
 </section>
 
 <section class="comparison" data-aos="fade-up">
@@ -253,6 +252,22 @@
 
   window.addEventListener('load', hideLoader);
   setTimeout(hideLoader, 3000);
+
+  // Música toggle
+  const music = document.getElementById("bg-music");
+  const musicToggleBtn = document.getElementById("musicToggleBtn");
+  let isPlaying = false;
+
+  musicToggleBtn.addEventListener("click", () => {
+    if (isPlaying) {
+      music.pause();
+      musicToggleBtn.textContent = "▶️ Reproducir Música";
+    } else {
+      music.play();
+      musicToggleBtn.textContent = "⏸️ Pausar Música";
+    }
+    isPlaying = !isPlaying;
+  });
 </script>
 
 </body>
