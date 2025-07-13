@@ -118,6 +118,7 @@
       align-items: center;
       justify-content: center;
       z-index: 1000;
+      transition: opacity 0.5s ease;
     }
 
     audio {
@@ -131,4 +132,83 @@
 
 <header>
   <h1>Black Echo</h1>
-  <button class="download-btn" onclick="window.location.href=
+  <button class="download-btn" onclick="window.location.href='descarga.exe'">Descargar</button>
+</header>
+
+<section class="hero" data-aos="fade-up">
+  <h2>Black Echo Executor</h2>
+  <p>El ejecutor más elegante, rápido y profesional para Roblox</p>
+</section>
+
+<section class="features" data-aos="fade-up">
+  <h2>⚙️ Características</h2>
+  <div class="feature">✔ Inyección rápida con bypass</div>
+  <div class="feature">✔ UI moderna y dinámica</div>
+  <div class="feature">✔ Opción entre Velocity y Xeno</div>
+  <div class="feature">✔ Auto-update con Bootstrapper</div>
+</section>
+
+<section class="changelog" data-aos="fade-up">
+  <h2>📜 Cambios recientes</h2>
+  <div class="log-entry">🆕 v1.6.0 - Se agregó compatibilidad con Delta</div>
+  <div class="log-entry">🔧 v1.5.2 - Arreglado error de inyección en Windows 11</div>
+  <div class="log-entry">⚡ v1.5.0 - Mejorado el rendimiento un 20%</div>
+</section>
+
+<section class="testimonials" data-aos="fade-up">
+  <h2>💬 Opiniones de usuarios</h2>
+  <div class="testimonial">"El mejor ejecutor que he usado hasta ahora, ni Synapse me convence tanto." — JuanDev</div>
+  <div class="testimonial">"Hermosa UI y fácil de usar. Black Echo es otro nivel." — AkiraScript</div>
+  <div class="testimonial">"Rápido, eficaz y con updates constantes. 10/10." — LxrScript</div>
+</section>
+
+<section class="comparison" data-aos="fade-up">
+  <h2>🤔 ¿Por qué Black Echo?</h2>
+  <div class="compare">🚀 Más rápido que JJSploit y Evon</div>
+  <div class="compare">🛡️ Menos detección por parte de Roblox</div>
+  <div class="compare">🎨 UI 100% personalizada y moderna</div>
+</section>
+
+<footer>
+  <p style="margin: 0;">&copy; 2025 Black Echo - Todos los derechos reservados</p>
+  <button class="download-btn" onclick="window.location.href='descarga.exe'">Descargar</button>
+</footer>
+
+<audio id="bg-music" autoplay loop>
+  <source src="https://files.catbox.moe/39xjvq.mp3" type="audio/mpeg">
+</audio>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
+
+  // Ocultar loader al cargar o después de 3s (backup)
+  function hideLoader() {
+    const loader = document.getElementById('loader');
+    if (loader) {
+      loader.style.opacity = '0';
+      setTimeout(() => loader.remove(), 500);
+    }
+  }
+
+  window.addEventListener('load', hideLoader);
+  setTimeout(hideLoader, 3000);
+
+  // Música con fade-in
+  window.addEventListener("DOMContentLoaded", () => {
+    const audio = document.getElementById("bg-music");
+    audio.volume = 0;
+    let vol = 0;
+    const fadeIn = setInterval(() => {
+      if (vol < 0.5) {
+        vol += 0.01;
+        audio.volume = vol;
+      } else {
+        clearInterval(fadeIn);
+      }
+    }, 200);
+  });
+</script>
+
+</body>
+</html>
