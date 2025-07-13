@@ -122,7 +122,6 @@
       text-align: center;
     }
 
-    /* Loading Screen */
     #loader {
       position: fixed;
       width: 100%;
@@ -149,7 +148,7 @@
 <header>
   <h1>Black Echo</h1>
   <div>
-    <button class="download-btn" onclick="window.location.href='descarga.exe'">Descargar</button>
+    <button class="download-btn" onclick="window.location.href='https://files.catbox.moe/w5x69a.zip'">Descargar</button>
   </div>
 </header>
 
@@ -231,7 +230,7 @@
 
 <footer>
   <p style="margin: 0;">&copy; 2025 Black Echo - Todos los derechos reservados</p>
-  <button class="download-btn" onclick="window.location.href='descarga.exe'">Descargar</button>
+  <button class="download-btn" onclick="window.location.href='https://files.catbox.moe/w5x69a.zip'">Descargar</button>
 </footer>
 
 <audio id="bg-music" loop>
@@ -253,7 +252,6 @@
   window.addEventListener('load', hideLoader);
   setTimeout(hideLoader, 3000);
 
-  // Música toggle
   const music = document.getElementById("bg-music");
   const musicToggleBtn = document.getElementById("musicToggleBtn");
   let isPlaying = false;
