@@ -74,7 +74,7 @@
       gap: 30px;
     }
 
-    .feature, .log-entry, .testimonial, .compare {
+    .feature, .log-entry, .compare {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
       padding: 20px;
@@ -83,17 +83,32 @@
       transition: transform 0.3s;
     }
 
-    .feature:hover, .log-entry:hover, .testimonial:hover {
+    .feature:hover, .log-entry:hover {
       transform: scale(1.03);
     }
 
     .testimonials {
       display: grid;
-      gap: 20px;
+      gap: 25px;
     }
 
     .testimonial {
-      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+    }
+
+    .testimonial img.avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #00ffff;
     }
 
     footer {
@@ -135,13 +150,13 @@
   <h1>Black Echo</h1>
   <div>
     <button class="download-btn" onclick="window.location.href='descarga.exe'">Descargar</button>
-    <button class="download-btn" onclick="document.getElementById('bg-music').play()">▶️ Reproducir Música</button>
   </div>
 </header>
 
 <section class="hero" data-aos="fade-up">
   <h2>Black Echo Executor</h2>
   <p>El ejecutor más elegante, rápido y profesional para Roblox</p>
+  <button class="download-btn" onclick="document.getElementById('bg-music').play()">▶️ Reproducir Música</button>
 </section>
 
 <section class="features" data-aos="fade-up">
@@ -160,9 +175,52 @@
 
 <section class="testimonials" data-aos="fade-up">
   <h2>💬 Opiniones de usuarios</h2>
-  <div class="testimonial">"El mejor ejecutor que he usado hasta ahora, ni Synapse me convence tanto." — JuanDev</div>
-  <div class="testimonial">"Hermosa UI y fácil de usar. Black Echo es otro nivel." — AkiraScript</div>
-  <div class="testimonial">"Rápido, eficaz y con updates constantes. 10/10." — LxrScript</div>
+
+  <div class="testimonial">
+    <img src="https://i.pravatar.cc/100?u=juan" class="avatar">
+    <div>
+      <p>⭐️⭐️⭐️⭐️</p>
+      <p>"El mejor ejecutor que he usado hasta ahora, lo uso todos los días."</p>
+      <small>— JuanDev</small>
+    </div>
+  </div>
+
+  <div class="testimonial">
+    <img src="https://i.pravatar.cc/100?u=akira" class="avatar">
+    <div>
+      <p>⭐️⭐️⭐️⭐️⭐️</p>
+      <p>"Hermosa UI y fácil de usar. Black Echo es otro nivel."</p>
+      <small>— AkiraScript</small>
+    </div>
+  </div>
+
+  <div class="testimonial">
+    <img src="https://i.pravatar.cc/100?u=lxr" class="avatar">
+    <div>
+      <p>⭐️⭐️⭐️⭐️½</p>
+      <p>"Muy rápido y estable, aunque me gustaría más personalización."</p>
+      <small>— LxrScript</small>
+    </div>
+  </div>
+
+  <div class="testimonial">
+    <img src="https://i.pravatar.cc/100?u=sammy" class="avatar">
+    <div>
+      <p>⭐️⭐️⭐️½</p>
+      <p>"Funciona bien, pero a veces tengo que reiniciar para que inyecte. Aun así, recomendable."</p>
+      <small>— SammyRblx</small>
+    </div>
+  </div>
+
+  <div class="testimonial">
+    <img src="https://i.pravatar.cc/100?u=neo" class="avatar">
+    <div>
+      <p>⭐️⭐️⭐️⭐️</p>
+      <p>"Black Echo es una joya oculta. Podría mejorar el soporte, pero en lo técnico es excelente."</p>
+      <small>— NeoScript</small>
+    </div>
+  </div>
+
 </section>
 
 <section class="comparison" data-aos="fade-up">
@@ -185,7 +243,6 @@
 <script>
   AOS.init();
 
-  // Ocultar loader al cargar o después de 3s (backup)
   function hideLoader() {
     const loader = document.getElementById('loader');
     if (loader) {
