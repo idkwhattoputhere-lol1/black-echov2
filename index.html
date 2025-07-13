@@ -88,14 +88,12 @@
     }
 
     .testimonials {
-      overflow-x: auto;
-      white-space: nowrap;
+      display: grid;
+      gap: 20px;
     }
 
     .testimonial {
-      display: inline-block;
-      width: 300px;
-      margin-right: 20px;
+      width: 100%;
     }
 
     footer {
@@ -155,7 +153,7 @@
 
 <section class="changelog" data-aos="fade-up">
   <h2>📜 Cambios recientes</h2>
-
+  <div class="log-entry">🆕 v1.6.0 - Nueva interfaz de carga con animación y música integrada</div>
   <div class="log-entry">🔧 v1.5.2 - Arreglado error de inyección en Windows 11</div>
   <div class="log-entry">⚡ v1.5.0 - Mejorado el rendimiento un 20%</div>
 </section>
