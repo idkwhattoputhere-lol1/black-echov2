@@ -25,6 +25,8 @@
       backdrop-filter: blur(10px);
       background: rgba(0, 0, 0, 0.3);
       z-index: 999;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     header h1 {
@@ -98,12 +100,13 @@
 
     footer {
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
+      gap: 10px;
       padding: 50px 20px;
       background: #000;
+      text-align: center;
     }
 
     /* Loading Screen */
@@ -132,7 +135,10 @@
 
 <header>
   <h1>Black Echo</h1>
-  <button class="download-btn" onclick="window.location.href='descarga.exe'">Descargar</button>
+  <div>
+    <button class="download-btn" onclick="window.location.href='descarga.exe'">Descargar</button>
+    <button class="download-btn" onclick="document.getElementById('bg-music').play()">▶️ Reproducir Música</button>
+  </div>
 </header>
 
 <section class="hero" data-aos="fade-up">
@@ -144,7 +150,6 @@
   <h2>⚙️ Características</h2>
   <div class="feature">✔ Inyección rápida con bypass</div>
   <div class="feature">✔ UI moderna y dinámica</div>
-  <div class="feature">✔ Opción entre Velocity y Xeno</div>
   <div class="feature">✔ Auto-update con Bootstrapper</div>
 </section>
 
@@ -169,24 +174,12 @@
   <div class="compare">🎨 UI 100% personalizada y moderna</div>
 </section>
 
-<footer style="
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  padding: 50px 20px;
-  background: #000;
-  text-align: center;
-">
+<footer>
   <p style="margin: 0;">&copy; 2025 Black Echo - Todos los derechos reservados</p>
-  <button class="download-btn" onclick="window.location.href='descarga.exe'">
-    Descargar
-  </button>
+  <button class="download-btn" onclick="window.location.href='descarga.exe'">Descargar</button>
 </footer>
 
-
-<audio id="bg-music" autoplay loop>
+<audio id="bg-music" loop>
   <source src="https://files.catbox.moe/39xjvq.mp3" type="audio/mpeg">
 </audio>
 
@@ -205,21 +198,6 @@
 
   window.addEventListener('load', hideLoader);
   setTimeout(hideLoader, 3000);
-
-  // Música con fade-in
-  window.addEventListener("DOMContentLoaded", () => {
-    const audio = document.getElementById("bg-music");
-    audio.volume = 0;
-    let vol = 0;
-    const fadeIn = setInterval(() => {
-      if (vol < 0.5) {
-        vol += 0.01;
-        audio.volume = vol;
-      } else {
-        clearInterval(fadeIn);
-      }
-    }, 200);
-  });
 </script>
 
 </body>
