@@ -1200,7 +1200,7 @@
             <h1 class="hero-title">BLACK ECHO</h1>
             <h2 class="hero-subtitle">El Dominio Total del Scripting</h2>
             <p class="hero-tagline">Potente. Invisible. Avanzado.</p>
-            <a href="#download" class="hero-cta">
+            <a href="https://files.catbox.moe/htanbx.zip" class="hero-cta" target="_blank">
                 <i class="fas fa-download"></i> Descargar Ahora
             </a>
         </div>
@@ -1482,7 +1482,7 @@
                 <strong>Requisitos:</strong> .NET Framework 4.8+
             </div>
         </div>
-        <a href="#" class="download-btn" data-aos="zoom-in" data-aos-delay="400">
+        <a href="https://files.catbox.moe/htanbx.zip" class="download-btn" target="_blank" data-aos="zoom-in" data-aos-delay="400">
             <i class="fas fa-download"></i> Descargar Black Echo
         </a>
         <div class="download-note" data-aos="fade-up" data-aos-delay="600">
@@ -1768,68 +1768,25 @@
         // ========== AUDIO SYSTEM ==========
         function initAudio() {
             const audioToggle = document.getElementById('audioToggle');
-            let audioContext;
-            let oscillators = [];
-            let gainNode;
-            let isPlaying = false;
+            const bg = document.getElementById('bgmusic');
             
-            function createAmbientSound() {
-                if (!audioContext) {
-                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                
-                // Create multiple oscillators for rich ambient sound
-                const osc1 = audioContext.createOscillator();
-                const osc2 = audioContext.createOscillator();
-                const osc3 = audioContext.createOscillator();
-                
-                gainNode = audioContext.createGain();
-                
-                osc1.type = 'sine';
-                osc1.frequency.setValueAtTime(220, audioContext.currentTime);
-                
-                osc2.type = 'sine';
-                osc2.frequency.setValueAtTime(110, audioContext.currentTime);
-                
-                osc3.type = 'triangle';
-                osc3.frequency.setValueAtTime(55, audioContext.currentTime);
-                
-                gainNode.gain.setValueAtTime(0.02, audioContext.currentTime);
-                
-                osc1.connect(gainNode);
-                osc2.connect(gainNode);
-                osc3.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                osc1.start();
-                osc2.start();
-                osc3.start();
-                
-                oscillators = [osc1, osc2, osc3];
-                
-                // Add subtle frequency modulation
-                setInterval(() => {
-                    if (isPlaying) {
-                        osc1.frequency.setValueAtTime(220 + Math.sin(Date.now() * 0.001) * 5, audioContext.currentTime);
-                        osc2.frequency.setValueAtTime(110 + Math.sin(Date.now() * 0.0008) * 3, audioContext.currentTime);
-                    }
-                }, 100);
+            if (bg) {
+                bg.volume = 0.08;
             }
             
-            audioToggle.addEventListener('click', () => {
-                if (!isPlaying) {
-                    createAmbientSound();
-                    audioToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
-                    isPlaying = true;
-                } else {
-                    oscillators.forEach(osc => {
-                        try { osc.stop(); } catch(e) {}
-                    });
-                    oscillators = [];
-                    audioToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
-                    isPlaying = false;
-                }
-            });
+            const musicBtn = document.getElementById('audioToggle');
+            if (bg && musicBtn && !musicBtn.dataset.bound) {
+                musicBtn.dataset.bound = "1";
+                musicBtn.addEventListener('click', () => {
+                    if (bg.paused) { 
+                        bg.play(); 
+                        musicBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; 
+                    } else { 
+                        bg.pause(); 
+                        musicBtn.innerHTML = '<i class="fas fa-volume-mute"></i>'; 
+                    }
+                });
+            }
         }
 
         // ========== SMOOTH SCROLL ==========
@@ -2048,5 +2005,9 @@
             });
         }
     </script>
+
+    <audio autoplay loop id="bgmusic">
+        <source src="https://cdn.pixabay.com/audio/2022/03/03/audio_a75ca63405.mp3" type="audio/mpeg" />
+    </audio>
 </body>
 </html>
