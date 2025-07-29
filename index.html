@@ -1,272 +1,692 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Black Echo | Executor Hub</title>
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #0f0f0f, #1f1f1f);
-      color: white;
-      overflow-x: hidden;
-    }
-
-    header {
-      position: fixed;
-      width: 100%;
-      top: 0;
-      padding: 15px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      backdrop-filter: blur(10px);
-      background: rgba(0, 0, 0, 0.3);
-      z-index: 999;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    header h1 {
-      font-size: 1.5rem;
-      color: #00ffff;
-    }
-
-    .download-btn {
-      background: #00ffff;
-      border: none;
-      color: black;
-      font-weight: bold;
-      padding: 10px 20px;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
-
-    .download-btn:hover {
-      transform: scale(1.05);
-    }
-
-    section {
-      padding: 100px 10% 60px;
-    }
-
-    .hero {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
-
-    .hero h2 {
-      font-size: 3rem;
-      background: linear-gradient(45deg, #00ffff, #ff00ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .features, .changelog, .testimonials, .comparison {
-      display: grid;
-      gap: 30px;
-    }
-
-    .feature, .log-entry, .compare {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 20px;
-      border-radius: 15px;
-      backdrop-filter: blur(10px);
-      transition: transform 0.3s;
-    }
-
-    .feature:hover, .log-entry:hover {
-      transform: scale(1.03);
-    }
-
-    .testimonials {
-      display: grid;
-      gap: 25px;
-    }
-
-    .testimonial {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 20px;
-      border-radius: 15px;
-      backdrop-filter: blur(10px);
-    }
-
-    .testimonial img.avatar {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #00ffff;
-    }
-
-    footer {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      padding: 50px 20px;
-      background: #000;
-      text-align: center;
-    }
-
-    #loader {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: #000;
-      color: #00ffff;
-      font-size: 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      transition: opacity 0.5s ease;
-    }
-
-    audio {
-      display: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Echo - Ejecutor de Scripts para Roblox</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <style>
+        :root {
+            --black: #000;
+            --neon-blue: #00f3ff;
+            --electric-purple: #bd00ff;
+            --deep-red: #ff003c;
+            --glow-blue: rgba(0, 243, 255, 0.5);
+            --glow-purple: rgba(189, 0, 255, 0.5);
+            --grid-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Exo 2', sans-serif;
+        }
+        
+        body {
+            background-color: var(--black);
+            color: white;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 30px 30px;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Fondo animado */
+        .background-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite linear;
+        }
+        
+        .code-fall {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            color: rgba(0, 243, 255, 0.1);
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .code-line {
+            position: absolute;
+            white-space: nowrap;
+            animation: fall 15s linear infinite;
+        }
+        
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--black);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s, visibility 1s;
+        }
+        
+        .preloader-logo {
+            width: 120px;
+            height: 120px;
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .preloader-logo-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px solid var(--neon-blue);
+            border-radius: 50%;
+            animation: rotate 3s linear infinite, pulse 2s infinite alternate;
+        }
+        
+        .preloader-logo-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--neon-blue);
+            font-size: 24px;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        .preloader-progress {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .preloader-progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--neon-blue), var(--electric-purple));
+            transition: width 0.3s;
+        }
+        
+        /* Secciones */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 100px 10%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            align-self: center;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--electric-purple));
+        }
+        
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 80px;
+            position: relative;
+        }
+        
+        .logo-container {
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .logo {
+            width: 180px;
+            height: 180px;
+            border: 3px solid var(--neon-blue);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 30px var(--glow-blue);
+            animation: rotate 20s linear infinite, pulse 3s infinite alternate;
+        }
+        
+        .logo-inner {
+            width: 90%;
+            height: 90%;
+            border: 2px solid var(--electric-purple);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 20px var(--glow-purple);
+        }
+        
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            background: linear-gradient(45deg, var(--neon-blue), var(--electric-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+        }
+        
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            letter-spacing: 4px;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            max-width: 700px;
+            opacity: 0.9;
+        }
+        
+        .typed-text {
+            color: var(--neon-blue);
+            font-weight: bold;
+        }
+        
+        .download-btn {
+            background: linear-gradient(45deg, var(--neon-blue), var(--electric-purple));
+            color: black;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px var(--glow-blue);
+            margin-bottom: 40px;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px var(--glow-blue), 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .download-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--electric-purple), var(--neon-blue));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .download-btn:hover::after {
+            opacity: 1;
+        }
+        
+        .music-player {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 1px solid var(--neon-blue);
+            backdrop-filter: blur(5px);
+        }
+        
+        .music-toggle {
+            background: none;
+            border: none;
+            color: var(--neon-blue);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .music-toggle:hover {
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .music-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Why Section */
+        .why-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 1.2rem;
+            line-height: 1.8;
+        }
+        
+        .quote {
+            font-style: italic;
+            font-size: 1.5rem;
+            margin: 30px 0;
+            padding: 20px;
+            border-left: 3px solid var(--neon-blue);
+            position: relative;
+        }
+        
+        .quote::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: -15px;
+            font-size: 4rem;
+            color: var(--neon-blue);
+            opacity: 0.3;
+            font-family: serif;
+        }
+        
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature-card {
+            background: rgba(20, 20, 30, 0.7);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            border-radius: 10px;
+            padding: 30px;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.2);
+            border-color: var(--neon-blue);
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 243, 255, 0.1), rgba(189, 0, 255, 0.1));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--neon-blue);
+            margin-bottom: 20px;
+        }
+        
+        .feature-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--neon-blue);
+        }
+        
+        .feature-desc {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        /* Comparativa Section */
+        .comparison-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(20, 20, 30, 0.7);
+            border-radius: 10px;
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 10px;
+            text-align: center;
+        }
+        
+        .comparison-header {
+            font-family: 'Orbitron', sans-serif;
+            padding: 15px;
+            text-transform: uppercase;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .comparison-item {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .comparison-item.feature-name {
+            text-align: left;
+            font-weight: bold;
+        }
+        
+        .comparison-item.black-echo {
+            color: var(--neon-blue);
+            font-weight: bold;
+            position: relative;
+        }
+        
+        .comparison-item.black-echo::after {
+            content: '✓';
+            position: absolute;
+            right: 10px;
+            color: var(--neon-blue);
+        }
+        
+        /* Footer */
+        footer {
+            background: rgba(10, 10, 15, 0.9);
+            padding: 50px 10% 30px;
+            border-top: 1px solid rgba(0, 243, 255, 0.2);
+            backdrop-filter: blur(5px);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--neon-blue), var(--electric-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .footer-links h3 {
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 20px;
+            color: var(--neon-blue);
+            font-size: 1.2rem;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--neon-blue);
+            padding-left: 5px;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--neon-blue);
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background: var(--neon-blue);
+            color: black;
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+        
+        /* Animaciones */
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            from { box-shadow: 0 0 10px var(--glow-blue); }
+            to { box-shadow: 0 0 30px var(--glow-blue), 0 0 50px var(--glow-purple); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+        
+        @keyframes fall {
+            0% { transform: translateY(-100px); }
+            100% { transform: translateY(100vh); }
+        }
+        
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-5px, 5px); }
+            40% { transform: translate(-5px, -5px); }
+            60% { transform: translate(5px, 5px); }
+            80% { transform: translate(5px, -5px); }
+            100% { transform: translate(0); }
+        }
+        
+        .glitch-effect {
+            animation: glitch 0.5s infinite;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            section {
+                padding: 80px 5%;
+            }
+            
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison-header {
+                display: none;
+            }
+            
+            .comparison-item.feature-name {
+                background: rgba(0, 0, 0, 0.3);
+                font-weight: bold;
+                margin-top: 20px;
+            }
+        }
+        
+        /* Cursor personalizado */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--neon-blue);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.2s, width 0.2s, height 0.2s;
+        }
+        
+        .cursor-follower {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9998;
+            transition: width 0.3s, height 0.3s;
+        }
+        
+        .cursor.active {
+            transform: translate(-50%, -50%) scale(1.5);
+            background: rgba(0, 243, 255, 0.3);
+        }
+        
+        .cursor-follower.active {
+            transform: translate(-50%, -50%) scale(2);
+            background: rgba(0, 243, 255, 0.5);
+        }
+    </style>
 </head>
 <body>
-
-<div id="loader">Cargando Black Echo...</div>
-
-<header>
-  <h1>Black Echo</h1>
-  <div>
-    <button class="download-btn" onclick="window.location.href='https://files.catbox.moe/w5x69a.zip'">Descargar</button>
-  </div>
-</header>
-
-<section class="hero" data-aos="fade-up">
-  <h2>Black Echo Executor</h2>
-  <p>El ejecutor más elegante, rápido y profesional para Roblox</p>
-  <button class="download-btn" id="musicToggleBtn">▶️ Reproducir Música</button>
-</section>
-
-<section class="features" data-aos="fade-up">
-  <h2>⚙️ Características</h2>
-  <div class="feature">✔ Inyección rápida con bypass</div>
-  <div class="feature">✔ UI moderna y dinámica</div>
-  <div class="feature">✔ Auto-update con Bootstrapper</div>
-</section>
-
-<section class="changelog" data-aos="fade-up">
-  <h2>📜 Cambios recientes</h2>
-  <div class="log-entry">🆕 v1.6.0 - Nueva interfaz de carga con animación y música integrada</div>
-  <div class="log-entry">🔧 v1.5.2 - Arreglado error de inyección en Windows 11</div>
-  <div class="log-entry">⚡ v1.5.0 - Mejorado el rendimiento un 20%</div>
-</section>
-
-<section class="testimonials" data-aos="fade-up">
-  <h2>💬 Opiniones de usuarios</h2>
-
-  <div class="testimonial">
-    <img src="https://i.pravatar.cc/100?u=juan" class="avatar">
-    <div>
-      <p>⭐️⭐️⭐️⭐️</p>
-      <p>"El mejor ejecutor que he usado hasta ahora, lo uso todos los días."</p>
-      <small>— JuanDev</small>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="preloader-logo">
+            <div class="preloader-logo-inner"></div>
+            <div class="preloader-logo-text">BLACK ECHO</div>
+        </div>
+        <div class="preloader-progress">
+            <div class="preloader-progress-bar" id="progress-bar"></div>
+        </div>
     </div>
-  </div>
 
-  <div class="testimonial">
-    <img src="https://i.pravatar.cc/100?u=akira" class="avatar">
-    <div>
-      <p>⭐️⭐️⭐️⭐️⭐️</p>
-      <p>"Hermosa UI y fácil de usar. Black Echo es otro nivel."</p>
-      <small>— AkiraScript</small>
-    </div>
-  </div>
-
-  <div class="testimonial">
-    <img src="https://i.pravatar.cc/100?u=lxr" class="avatar">
-    <div>
-      <p>⭐️⭐️⭐️⭐️½</p>
-      <p>"Muy rápido y estable, aunque me gustaría más personalización."</p>
-      <small>— LxrScript</small>
-    </div>
-  </div>
-
-  <div class="testimonial">
-    <img src="https://i.pravatar.cc/100?u=sammy" class="avatar">
-    <div>
-      <p>⭐️⭐️⭐️½</p>
-      <p>"Funciona bien, pero a veces tengo que reiniciar para que inyecte. Aun así, recomendable."</p>
-      <small>— SammyRblx</small>
-    </div>
-  </div>
-
-  <div class="testimonial">
-    <img src="https://i.pravatar.cc/100?u=neo" class="avatar">
-    <div>
-      <p>⭐️⭐️⭐️⭐️</p>
-      <p>"Black Echo es una joya oculta. Podría mejorar el soporte, pero en lo técnico es excelente."</p>
-      <small>— NeoScript</small>
-    </div>
-  </div>
-</section>
-
-<section class="comparison" data-aos="fade-up">
-  <h2>🤔 ¿Por qué Black Echo?</h2>
-  <div class="compare">🚀 Más rápido que JJSploit y Evon</div>
-  <div class="compare">🛡️ Menos detección por parte de Roblox</div>
-  <div class="compare">🎨 UI 100% personalizada y moderna</div>
-</section>
-
-<footer>
-  <p style="margin: 0;">&copy; 2025 Black Echo - Todos los derechos reservados</p>
-  <button class="download-btn" onclick="window.location.href='https://files.catbox.moe/w5x69a.zip'">Descargar</button>
-</footer>
-
-<audio id="bg-music" loop>
-  <source src="https://files.catbox.moe/39xjvq.mp3" type="audio/mpeg">
-</audio>
-
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-  AOS.init();
-
-  function hideLoader() {
-    const loader = document.getElementById('loader');
-    if (loader) {
-      loader.style.opacity = '0';
-      setTimeout(() => loader.remove(), 500);
-    }
-  }
-
-  window.addEventListener('load', hideLoader);
-  setTimeout(hideLoader, 3000);
-
-  const music = document.getElementById("bg-music");
-  const musicToggleBtn = document.getElementById("musicToggleBtn");
-  let isPlaying = false;
-
-  musicToggleBtn.addEventListener("click", () => {
-    if (isPlaying) {
-      music.pause();
-      musicToggleBtn.textContent = "▶️ Reproducir Música";
-    } else {
-      music.play();
-      musicToggleBtn.textContent = "⏸️ Pausar Música";
-    }
-    isPlaying = !isPlaying;
-  });
-</script>
-
-</body>
-</html>
+    <!-- Fondo animado -->
+   
