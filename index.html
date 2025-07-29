@@ -3,690 +3,1992 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Black Echo - Ejecutor de Scripts para Roblox</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <title>Black Echo - El Dominio Total del Scripting</title>
+    <meta name="description" content="Black Echo: El ejecutor más avanzado para Roblox. Potente, invisible, evolutivo.">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
     <style>
-        :root {
-            --black: #000;
-            --neon-blue: #00f3ff;
-            --electric-purple: #bd00ff;
-            --deep-red: #ff003c;
-            --glow-blue: rgba(0, 243, 255, 0.5);
-            --glow-purple: rgba(189, 0, 255, 0.5);
-            --grid-color: rgba(255, 255, 255, 0.05);
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@100;200;300;400;500;600;700;800;900&display=swap');
         
+        :root {
+            --void-black: #000000;
+            --deep-black: #0a0a0a;
+            --shadow-black: #151515;
+            --cyber-blue: #00f5ff;
+            --electric-purple: #9d4edd;
+            --plasma-red: #ff073a;
+            --neon-blue: #1e90ff;
+            --matrix-green: #39ff14;
+            --text-white: #ffffff;
+            --text-gray: #b8b8b8;
+            --text-dark-gray: #666666;
+            --glow-blue: rgba(0, 245, 255, 0.6);
+            --glow-purple: rgba(157, 78, 221, 0.6);
+            --glow-red: rgba(255, 7, 58, 0.6);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Exo 2', sans-serif;
         }
-        
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            background-color: var(--black);
-            color: white;
+            font-family: 'Exo 2', sans-serif;
+            background: var(--void-black);
+            color: var(--text-white);
             overflow-x: hidden;
-            background-image: 
-                linear-gradient(var(--grid-color) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-            background-size: 30px 30px;
-            min-height: 100vh;
-            position: relative;
+            cursor: none;
+            line-height: 1.6;
         }
-        
-        /* Fondo animado */
-        .background-effects {
+
+        /* ========== CUSTOM CURSOR ========== */
+        .cursor {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
-        
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-        
-        .particle {
-            position: absolute;
-            background: var(--neon-blue);
+            width: 8px;
+            height: 8px;
+            background: var(--cyber-blue);
             border-radius: 50%;
-            opacity: 0.3;
-            animation: float 15s infinite linear;
-        }
-        
-        .code-fall {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            color: rgba(0, 243, 255, 0.1);
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            line-height: 1.5;
-            overflow: hidden;
             pointer-events: none;
+            z-index: 10000;
+            transition: all 0.1s ease;
+            box-shadow: 0 0 15px var(--glow-blue);
         }
-        
-        .code-line {
-            position: absolute;
-            white-space: nowrap;
-            animation: fall 15s linear infinite;
+
+        .cursor-ring {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--cyber-blue);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.15s ease;
+            opacity: 0.7;
         }
-        
-        /* Preloader */
+
+        .cursor.hover {
+            width: 15px;
+            height: 15px;
+            background: var(--electric-purple);
+            box-shadow: 0 0 25px var(--glow-purple);
+        }
+
+        .cursor-ring.hover {
+            width: 50px;
+            height: 50px;
+            border-color: var(--electric-purple);
+        }
+
+        /* ========== PRELOADER ========== */
         .preloader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--black);
+            background: var(--void-black);
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            z-index: 9999;
-            transition: opacity 1s, visibility 1s;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
         }
-        
+
+        .preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
         .preloader-logo {
-            width: 120px;
-            height: 120px;
-            position: relative;
-            margin-bottom: 30px;
+            font-family: 'Orbitron', monospace;
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--cyber-blue), var(--electric-purple), var(--plasma-red));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: preloaderGlow 2s ease-in-out infinite, gradientShift 4s ease-in-out infinite;
+            text-shadow: 0 0 50px var(--glow-blue);
         }
-        
-        .preloader-logo-inner {
-            position: absolute;
+
+        @keyframes preloaderGlow {
+            0%, 100% { filter: brightness(1) drop-shadow(0 0 20px var(--cyber-blue)); }
+            50% { filter: brightness(1.5) drop-shadow(0 0 40px var(--electric-purple)); }
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* ========== DYNAMIC BACKGROUND ========== */
+        .cyber-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            border: 3px solid var(--neon-blue);
-            border-radius: 50%;
-            animation: rotate 3s linear infinite, pulse 2s infinite alternate;
+            z-index: -2;
+            background: radial-gradient(circle at 20% 30%, rgba(0, 245, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(157, 78, 221, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(255, 7, 58, 0.05) 0%, transparent 50%);
+            animation: backgroundPulse 8s ease-in-out infinite;
         }
-        
-        .preloader-logo-text {
+
+        @keyframes backgroundPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.03;
+        }
+
+        .digital-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: var(--neon-blue);
-            font-size: 24px;
-            font-weight: bold;
-            font-family: 'Orbitron', sans-serif;
-            text-shadow: 0 0 10px var(--neon-blue);
+            width: 2px;
+            height: 2px;
+            background: var(--cyber-blue);
+            border-radius: 50%;
+            animation: particleFloat 8s linear infinite;
+            box-shadow: 0 0 8px var(--glow-blue);
         }
-        
-        .preloader-progress {
-            width: 200px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-            overflow: hidden;
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) translateX(100px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* ========== NAVIGATION ========== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 25px 0;
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 245, 255, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(30px);
+            border-bottom-color: rgba(0, 245, 255, 0.3);
+            padding: 15px 0;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 50px;
+        }
+
+        .nav-logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--cyber-blue), var(--electric-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px var(--glow-blue);
+            transition: all 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            filter: brightness(1.3);
+            text-shadow: 0 0 40px var(--glow-purple);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        .nav-link {
+            color: var(--text-white);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
             position: relative;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        
-        .preloader-progress-bar {
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(45deg, var(--cyber-blue), var(--electric-purple));
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--cyber-blue);
+            text-shadow: 0 0 15px var(--glow-blue);
+        }
+
+        .nav-link:hover::before {
+            width: 100%;
+        }
+
+        /* ========== HERO SECTION ========== */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
+            width: 100%;
             height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--neon-blue), var(--electric-purple));
-            transition: width 0.3s;
+            background: radial-gradient(circle at center, rgba(0, 245, 255, 0.05) 0%, transparent 70%);
+            animation: heroPulse 6s ease-in-out infinite;
         }
-        
-        /* Secciones */
-        section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 100px 10%;
+
+        @keyframes heroPulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 5rem;
+            font-weight: 900;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, var(--cyber-blue), var(--electric-purple), var(--plasma-red));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleGlitch 3s ease-in-out infinite, gradientShift 6s ease-in-out infinite;
+            text-shadow: 0 0 50px var(--glow-blue);
+            line-height: 1.1;
+        }
+
+        @keyframes titleGlitch {
+            0%, 90%, 100% { transform: translate3d(0, 0, 0); }
+            93% { transform: translate3d(-2px, 0, 0); }
+            96% { transform: translate3d(2px, 0, 0); }
+        }
+
+        .hero-subtitle {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 40px;
+            color: var(--text-gray);
+            opacity: 0;
+            animation: typewriter 2s steps(30) 1s forwards;
+        }
+
+        @keyframes typewriter {
+            0% { width: 0; opacity: 1; }
+            100% { width: 100%; opacity: 1; }
+        }
+
+        .hero-tagline {
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: var(--cyber-blue);
+            margin-bottom: 50px;
+            text-shadow: 0 0 20px var(--glow-blue);
+            animation: fadeInUp 1s ease-out 3s both;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            padding: 20px 60px;
+            background: linear-gradient(45deg, var(--cyber-blue), var(--electric-purple));
+            border: none;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-white);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 245, 255, 0.3);
+            animation: ctaPulse 3s ease-in-out infinite, fadeInUp 1s ease-out 4s both;
         }
-        
-        .section-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            margin-bottom: 60px;
-            text-align: center;
+
+        @keyframes ctaPulse {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-5px) scale(1.02); }
+        }
+
+        .hero-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.8s ease;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 25px 50px rgba(157, 78, 221, 0.5);
+        }
+
+        .hero-cta:hover::before {
+            left: 100%;
+        }
+
+        /* ========== SECTIONS ========== */
+        .section {
+            padding: 120px 50px;
+            max-width: 1400px;
+            margin: 0 auto;
             position: relative;
-            display: inline-block;
-            align-self: center;
-            text-transform: uppercase;
-            letter-spacing: 3px;
         }
-        
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 3.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 80px;
+            background: linear-gradient(45deg, var(--cyber-blue), var(--electric-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
         .section-title::after {
             content: '';
             position: absolute;
-            bottom: -15px;
+            bottom: -20px;
             left: 50%;
             transform: translateX(-50%);
             width: 100px;
             height: 3px;
-            background: linear-gradient(90deg, var(--neon-blue), var(--electric-purple));
+            background: linear-gradient(45deg, var(--cyber-blue), var(--electric-purple));
+            border-radius: 2px;
         }
-        
-        /* Hero Section */
-        .hero {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+
+        /* ========== WHY BLACK ECHO ========== */
+        .narrative {
             text-align: center;
-            padding-top: 80px;
-            position: relative;
-        }
-        
-        .logo-container {
-            margin-bottom: 40px;
-            position: relative;
-        }
-        
-        .logo {
-            width: 180px;
-            height: 180px;
-            border: 3px solid var(--neon-blue);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 30px var(--glow-blue);
-            animation: rotate 20s linear infinite, pulse 3s infinite alternate;
-        }
-        
-        .logo-inner {
-            width: 90%;
-            height: 90%;
-            border: 2px solid var(--electric-purple);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 0 20px var(--glow-purple);
-        }
-        
-        .logo-text {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 24px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            background: linear-gradient(45deg, var(--neon-blue), var(--electric-purple));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
-        }
-        
-        .hero-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            letter-spacing: 4px;
-            line-height: 1.2;
-        }
-        
-        .hero-subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 40px;
-            max-width: 700px;
-            opacity: 0.9;
-        }
-        
-        .typed-text {
-            color: var(--neon-blue);
-            font-weight: bold;
-        }
-        
-        .download-btn {
-            background: linear-gradient(45deg, var(--neon-blue), var(--electric-purple));
-            color: black;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            font-weight: bold;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            transition: all 0.3s;
-            box-shadow: 0 0 20px var(--glow-blue);
-            margin-bottom: 40px;
-        }
-        
-        .download-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 30px var(--glow-blue), 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .download-btn::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, var(--electric-purple), var(--neon-blue));
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        .download-btn:hover::after {
-            opacity: 1;
-        }
-        
-        .music-player {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 10px 20px;
-            border-radius: 50px;
-            border: 1px solid var(--neon-blue);
-            backdrop-filter: blur(5px);
-        }
-        
-        .music-toggle {
-            background: none;
-            border: none;
-            color: var(--neon-blue);
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .music-toggle:hover {
-            color: white;
-            transform: scale(1.1);
-        }
-        
-        .music-label {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        /* Why Section */
-        .why-content {
-            max-width: 900px;
+            max-width: 800px;
             margin: 0 auto;
-            text-align: center;
-            font-size: 1.2rem;
+        }
+
+        .narrative-text {
+            font-size: 1.8rem;
+            font-weight: 300;
             line-height: 1.8;
+            margin-bottom: 40px;
+            color: var(--text-gray);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
         }
-        
-        .quote {
-            font-style: italic;
-            font-size: 1.5rem;
-            margin: 30px 0;
-            padding: 20px;
-            border-left: 3px solid var(--neon-blue);
-            position: relative;
+
+        .narrative-text.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
-        
-        .quote::before {
-            content: '"';
-            position: absolute;
-            top: -20px;
-            left: -15px;
-            font-size: 4rem;
-            color: var(--neon-blue);
-            opacity: 0.3;
-            font-family: serif;
+
+        .narrative-highlight {
+            color: var(--cyber-blue);
+            font-weight: 600;
+            text-shadow: 0 0 15px var(--glow-blue);
         }
-        
-        /* Features Section */
+
+        /* ========== FEATURES GRID ========== */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            margin-top: 80px;
         }
-        
+
         .feature-card {
-            background: rgba(20, 20, 30, 0.7);
-            border: 1px solid rgba(0, 243, 255, 0.2);
-            border-radius: 10px;
-            padding: 30px;
-            transition: all 0.3s;
-            backdrop-filter: blur(5px);
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.05), rgba(157, 78, 221, 0.05));
+            padding: 50px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 245, 255, 0.2);
+            transition: all 0.5s ease;
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(10px);
         }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.2);
-            border-color: var(--neon-blue);
-        }
-        
+
         .feature-card::before {
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
+            left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(0, 243, 255, 0.1), rgba(189, 0, 255, 0.1));
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s;
+            background: linear-gradient(90deg, transparent, rgba(0, 245, 255, 0.1), transparent);
+            transition: left 0.8s ease;
         }
-        
+
+        .feature-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            border-color: var(--cyber-blue);
+            box-shadow: 0 30px 60px rgba(0, 245, 255, 0.2);
+        }
+
         .feature-card:hover::before {
-            opacity: 1;
+            left: 100%;
         }
-        
+
         .feature-icon {
-            font-size: 2.5rem;
-            color: var(--neon-blue);
-            margin-bottom: 20px;
+            font-size: 3.5rem;
+            color: var(--cyber-blue);
+            margin-bottom: 25px;
+            text-shadow: 0 0 25px var(--glow-blue);
+            transition: all 0.3s ease;
         }
-        
+
+        .feature-card:hover .feature-icon {
+            color: var(--electric-purple);
+            text-shadow: 0 0 30px var(--glow-purple);
+        }
+
         .feature-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            color: var(--neon-blue);
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-white);
         }
-        
-        .feature-desc {
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-        
-        /* Comparativa Section */
-        .comparison-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: rgba(20, 20, 30, 0.7);
-            border-radius: 10px;
-            padding: 30px;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(0, 243, 255, 0.2);
-        }
-        
-        .comparison-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
-            gap: 10px;
-            text-align: center;
-        }
-        
-        .comparison-header {
-            font-family: 'Orbitron', sans-serif;
-            padding: 15px;
-            text-transform: uppercase;
+
+        .feature-description {
             font-size: 1.1rem;
-            letter-spacing: 1px;
-            background: rgba(0, 0, 0, 0.3);
+            color: var(--text-gray);
+            line-height: 1.7;
         }
-        
-        .comparison-item {
-            padding: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .comparison-item.feature-name {
-            text-align: left;
-            font-weight: bold;
-        }
-        
-        .comparison-item.black-echo {
-            color: var(--neon-blue);
-            font-weight: bold;
+
+        /* ========== COMPARISON TABLE ========== */
+        .comparison-container {
+            background: rgba(10, 10, 10, 0.8);
+            border-radius: 25px;
+            padding: 50px;
+            border: 1px solid rgba(0, 245, 255, 0.2);
+            backdrop-filter: blur(20px);
+            overflow: hidden;
             position: relative;
         }
-        
-        .comparison-item.black-echo::after {
-            content: '✓';
-            position: absolute;
-            right: 10px;
-            color: var(--neon-blue);
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1.1rem;
         }
-        
-        /* Footer */
-        footer {
-            background: rgba(10, 10, 15, 0.9);
-            padding: 50px 10% 30px;
-            border-top: 1px solid rgba(0, 243, 255, 0.2);
-            backdrop-filter: blur(5px);
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 25px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 245, 255, 0.1);
         }
-        
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            max-width: 1200px;
+
+        .comparison-table th {
+            background: linear-gradient(45deg, var(--cyber-blue), var(--electric-purple));
+            font-weight: 700;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .comparison-table .winner {
+            background: rgba(0, 245, 255, 0.1);
+            color: var(--cyber-blue);
+            font-weight: 700;
+            text-shadow: 0 0 10px var(--glow-blue);
+        }
+
+        .comparison-table .loser {
+            color: var(--text-dark-gray);
+        }
+
+        /* ========== CHANGELOG TIMELINE ========== */
+        .timeline {
+            position: relative;
+            max-width: 800px;
             margin: 0 auto;
+            padding-left: 50px;
         }
-        
-        .footer-logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, var(--neon-blue), var(--electric-purple));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 25px;
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--cyber-blue), var(--electric-purple), var(--plasma-red));
+            border-radius: 2px;
         }
-        
-        .footer-links h3 {
-            font-family: 'Orbitron', sans-serif;
-            margin-bottom: 20px;
-            color: var(--neon-blue);
-            font-size: 1.2rem;
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 60px;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 20px;
+            border-left: 4px solid var(--cyber-blue);
+            backdrop-filter: blur(15px);
+            transition: all 0.4s ease;
         }
-        
-        .footer-links ul {
-            list-style: none;
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -55px;
+            top: 50px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--cyber-blue);
+            box-shadow: 0 0 25px var(--glow-blue);
         }
-        
-        .footer-links li {
+
+        .timeline-item:hover {
+            transform: translateX(10px);
+            border-left-color: var(--electric-purple);
+            box-shadow: 0 15px 40px rgba(0, 245, 255, 0.2);
+        }
+
+        .timeline-item.latest {
+            border-left-color: var(--plasma-red);
+            background: rgba(255, 7, 58, 0.05);
+        }
+
+        .timeline-item.latest::before {
+            background: var(--plasma-red);
+            box-shadow: 0 0 25px var(--glow-red);
+        }
+
+        .timeline-version {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--cyber-blue);
             margin-bottom: 10px;
+            font-family: 'Orbitron', monospace;
         }
-        
-        .footer-links a {
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            transition: all 0.3s;
+
+        .timeline-date {
+            color: var(--text-dark-gray);
+            font-size: 1rem;
+            margin-bottom: 20px;
         }
-        
-        .footer-links a:hover {
-            color: var(--neon-blue);
-            padding-left: 5px;
+
+        .timeline-changes {
+            color: var(--text-gray);
+            line-height: 1.7;
         }
-        
-        .social-icons {
+
+        /* ========== TESTIMONIALS ========== */
+        .testimonials-carousel {
+            max-width: 1000px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .testimonial-track {
             display: flex;
-            gap: 15px;
-            margin-top: 15px;
+            animation: slideTestimonials 20s linear infinite;
         }
-        
-        .social-icons a {
+
+        @keyframes slideTestimonials {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .testimonial-card {
+            min-width: 400px;
+            margin-right: 40px;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 20px;
+            border: 1px solid rgba(157, 78, 221, 0.2);
+            backdrop-filter: blur(15px);
+        }
+
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--cyber-blue), var(--electric-purple));
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--neon-blue);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            color: var(--text-gray);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .testimonial-author {
+            color: var(--cyber-blue);
+            font-weight: 600;
+        }
+
+        /* ========== FAQ ACCORDION ========== */
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 245, 255, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 30px;
+            cursor: pointer;
             font-size: 1.2rem;
-            transition: all 0.3s;
+            font-weight: 600;
+            color: var(--text-white);
+            transition: all 0.3s ease;
+            position: relative;
         }
-        
-        .social-icons a:hover {
-            background: var(--neon-blue);
-            color: black;
-            transform: translateY(-5px);
+
+        .faq-question::after {
+            content: '+';
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: var(--cyber-blue);
+            transition: transform 0.3s ease;
         }
-        
-        .copyright {
+
+        .faq-question:hover {
+            color: var(--cyber-blue);
+            background: rgba(0, 245, 255, 0.05);
+        }
+
+        .faq-item.active .faq-question::after {
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 30px;
+            color: var(--text-gray);
+            line-height: 1.7;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            padding: 0 30px 30px 30px;
+        }
+
+        /* ========== DOWNLOAD SECTION ========== */
+        .download-section {
+            background: radial-gradient(circle at center, rgba(0, 245, 255, 0.1) 0%, rgba(157, 78, 221, 0.05) 50%, transparent 100%);
             text-align: center;
-            padding-top: 30px;
-            margin-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%2300f5ff" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100px, -100px); }
+        }
+
+        .download-info {
+            margin-bottom: 50px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .download-version {
+            font-size: 1.4rem;
+            color: var(--cyber-blue);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .download-details {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 25px 80px;
+            background: linear-gradient(45deg, var(--cyber-blue), var(--electric-purple));
+            border: none;
+            border-radius: 60px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-white);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 245, 255, 0.3);
+            animation: downloadPulse 4s ease-in-out infinite;
+            margin-bottom: 30px;
+        }
+
+        @keyframes downloadPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 20px 50px rgba(0, 245, 255, 0.3); }
+            50% { transform: scale(1.05); box-shadow: 0 30px 70px rgba(157, 78, 221, 0.5); }
+        }
+
+        .download-btn:hover {
+            transform: translateY(-10px) scale(1.08);
+        }
+
+        .download-note {
+            color: var(--text-dark-gray);
+            font-size: 0.95rem;
+            margin-top: 20px;
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            background: rgba(0, 0, 0, 0.95);
+            padding: 80px 50px 40px;
+            text-align: center;
+            border-top: 1px solid rgba(0, 245, 255, 0.2);
+            position: relative;
+        }
+
+        .footer-logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--cyber-blue), var(--electric-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 40px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, var(--cyber-blue), var(--electric-purple));
+            border-radius: 50%;
+            color: var(--text-white);
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--electric-purple), var(--plasma-red));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-link:hover {
+            transform: translateY(-10px) scale(1.1);
+            box-shadow: 0 20px 40px rgba(0, 245, 255, 0.4);
+        }
+
+        .social-link:hover::before {
+            opacity: 1;
+        }
+
+        .social-link i {
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-link {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--cyber-blue);
+            text-shadow: 0 0 10px var(--glow-blue);
+        }
+
+        .footer-copyright {
+            color: var(--text-dark-gray);
             font-size: 0.9rem;
+            margin-bottom: 20px;
         }
-        
-        /* Animaciones */
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+
+        .footer-made-with {
+            color: var(--text-gray);
+            font-size: 0.95rem;
         }
-        
-        @keyframes pulse {
-            from { box-shadow: 0 0 10px var(--glow-blue); }
-            to { box-shadow: 0 0 30px var(--glow-blue), 0 0 50px var(--glow-purple); }
+
+        .footer-made-with .heart {
+            color: var(--plasma-red);
+            animation: heartbeat 2s ease-in-out infinite;
         }
-        
-        @keyframes float {
-            0% { transform: translateY(0) translateX(0); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
         }
-        
-        @keyframes fall {
-            0% { transform: translateY(-100px); }
-            100% { transform: translateY(100vh); }
+
+        /* ========== AUDIO CONTROLS ========== */
+        .audio-controls {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            z-index: 1000;
         }
-        
-        @keyframes glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-5px, 5px); }
-            40% { transform: translate(-5px, -5px); }
-            60% { transform: translate(5px, 5px); }
-            80% { transform: translate(5px, -5px); }
-            100% { transform: translate(0); }
+
+        .audio-toggle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--cyber-blue), var(--electric-purple));
+            border: none;
+            color: var(--text-white);
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0, 245, 255, 0.3);
+            position: relative;
+            overflow: hidden;
         }
-        
-        .glitch-effect {
-            animation: glitch 0.5s infinite;
+
+        .audio-toggle::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--electric-purple), var(--plasma-red));
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
-        
-        /* Responsive */
-        @media (max-width: 992px) {
-            .hero-title {
-                font-size: 2.8rem;
+
+        .audio-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(157, 78, 221, 0.5);
+        }
+
+        .audio-toggle:hover::before {
+            opacity: 1;
+        }
+
+        .audio-toggle i {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ========== RESPONSIVE DESIGN ========== */
+        @media (max-width: 1200px) {
+            .nav-container {
+                padding: 0 30px;
             }
             
-            .section-title {
-                font-size: 2rem;
+            .section {
+                padding: 100px 30px;
             }
             
             .features-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                grid-template-columns: 1fr;
             }
         }
-        
+
         @media (max-width: 768px) {
-            section {
-                padding: 80px 5%;
-            }
-            
             .hero-title {
-                font-size: 2.2rem;
+                font-size: 3.5rem;
             }
             
             .hero-subtitle {
-                font-size: 1.2rem;
+                font-size: 1.5rem;
             }
             
-            .comparison-grid {
-                grid-template-columns: 1fr;
+            .section-title {
+                font-size: 2.5rem;
             }
             
-            .comparison-header {
+            .nav-menu {
                 display: none;
             }
             
-            .comparison-item.feature-name {
-                background: rgba(0, 0, 0, 0.3);
-                font-weight: bold;
-                margin-top: 20px;
+            .nav-container {
+                padding: 0 20px;
+            }
+            
+            .section {
+                padding: 80px 20px;
+            }
+            
+            .feature-card {
+                padding: 30px;
+            }
+            
+            .comparison-container {
+                padding: 30px 20px;
+            }
+            
+            .timeline {
+                padding-left: 30px;
+            }
+            
+            .timeline-item {
+                padding: 30px 20px;
             }
         }
-        
-        /* Cursor personalizado */
-        .cursor {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--neon-blue);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: difference;
-            transition: transform 0.2s, width 0.2s, height 0.2s;
+
+        /* ========== UTILITY ANIMATIONS ========== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
-        .cursor-follower {
-            position: fixed;
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ========== SCROLLBAR STYLING ========== */
+        ::-webkit-scrollbar {
             width: 8px;
-            height: 8px;
-            background: var(--neon-blue);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 9998;
-            transition: width 0.3s, height 0.3s;
         }
-        
-        .cursor.active {
-            transform: translate(-50%, -50%) scale(1.5);
-            background: rgba(0, 243, 255, 0.3);
+
+        ::-webkit-scrollbar-track {
+            background: var(--void-black);
         }
-        
-        .cursor-follower.active {
-            transform: translate(-50%, -50%) scale(2);
-            background: rgba(0, 243, 255, 0.5);
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, var(--cyber-blue), var(--electric-purple));
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, var(--electric-purple), var(--plasma-red));
         }
     </style>
 </head>
 <body>
-    <!-- Preloader -->
-    <div class="preloader">
-        <div class="preloader-logo">
-            <div class="preloader-logo-inner"></div>
-            <div class="preloader-logo-text">BLACK ECHO</div>
-        </div>
-        <div class="preloader-progress">
-            <div class="preloader-progress-bar" id="progress-bar"></div>
-        </div>
+    <!-- PRELOADER -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-logo">BLACK ECHO</div>
     </div>
 
-    <!-- Fondo animado -->
-   
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- DYNAMIC BACKGROUND -->
+    <div class="cyber-bg"></div>
+    <canvas class="matrix-rain" id="matrixCanvas"></canvas>
+    <div class="digital-particles" id="particlesContainer"></div>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">BLACK ECHO</div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Inicio</a></li>
+                <li><a href="#why" class="nav-link">¿Por qué?</a></li>
+                <li><a href="#features" class="nav-link">Características</a></li>
+                <li><a href="#comparison" class="nav-link">Comparativa</a></li>
+                <li><a href="#changelog" class="nav-link">Changelog</a></li>
+                <li><a href="#download" class="nav-link">Descargar</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1 class="hero-title">BLACK ECHO</h1>
+            <h2 class="hero-subtitle">El Dominio Total del Scripting</h2>
+            <p class="hero-tagline">Potente. Invisible. Avanzado.</p>
+            <a href="#download" class="hero-cta">
+                <i class="fas fa-download"></i> Descargar Ahora
+            </a>
+        </div>
+    </section>
+
+    <!-- WHY BLACK ECHO SECTION -->
+    <section class="section" id="why">
+        <h2 class="section-title" data-aos="fade-up">¿Por qué Black Echo?</h2>
+        <div class="narrative">
+            <p class="narrative-text" data-aos="fade-up" data-aos-delay="200">
+                No es solo un exploit. Es tu <span class="narrative-highlight">ventaja invisible</span>.
+            </p>
+            <p class="narrative-text" data-aos="fade-up" data-aos-delay="400">
+                Inyecta con <span class="narrative-highlight">precisión quirúrgica</span>. Sin ruido. Sin detección.
+            </p>
+            <p class="narrative-text" data-aos="fade-up" data-aos-delay="600">
+                Black Echo representa la <span class="narrative-highlight">evolución del scripting</span>. 
+                Mientras otros exploits luchan por mantenerse relevantes, nosotros definimos el futuro.
+            </p>
+        </div>
+    </section>
+
+    <!-- FEATURES SECTION -->
+    <section class="section" id="features">
+        <h2 class="section-title" data-aos="fade-up">Características de Élite</h2>
+        <div class="features-grid">
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-icon"><i class="fas fa-rocket"></i></div>
+                <h3 class="feature-title">Inyección 99% UNC</h3>
+                <p class="feature-description">
+                    Compatibilidad suprema con 99% UNC y 95% SUNC. Ejecuta cualquier script sin limitaciones ni compromisos.
+                </p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-icon"><i class="fas fa-code"></i></div>
+                <h3 class="feature-title">Velocity API Core</h3>
+                <p class="feature-description">
+                    Motor principal basado en Velocity API con alternancia opcional a Xeno. Máxima flexibilidad y rendimiento.
+                </p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-icon"><i class="fas fa-tabs"></i></div>
+                <h3 class="feature-title">Sistema de Pestañas Infinitas</h3>
+                <p class="feature-description">
+                    Gestión avanzada de múltiples scripts. Organiza, edita y ejecuta sin límites con interfaz intuitiva.
+                </p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3 class="feature-title">Seguridad Reforzada</h3>
+                <p class="feature-description">
+                    Bypass estable y anti-detección de última generación. Permanece invisible ante cualquier sistema de seguridad.
+                </p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+                <div class="feature-icon"><i class="fas fa-desktop"></i></div>
+                <h3 class="feature-title">UI Optimizada</h3>
+                <p class="feature-description">
+                    Interfaz ligera y profesional diseñada para máxima eficiencia. Cada elemento optimizado para la experiencia de usuario.
+                </p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="600">
+                <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                <h3 class="feature-title">Inyección de Un Clic</h3>
+                <p class="feature-description">
+                    Velocidad de inyección ultrarrápida con un solo clic. Simplifica tu flujo de trabajo sin sacrificar potencia.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMPARISON SECTION -->
+    <section class="section" id="comparison">
+        <h2 class="section-title" data-aos="fade-up">Superioridad Absoluta</h2>
+        <div class="comparison-container" data-aos="fade-up" data-aos-delay="200">
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Característica</th>
+                        <th class="winner">Black Echo</th>
+                        <th>Hlaxho</th>
+                        <th>Delta</th>
+                        <th>Fluxus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>UNC Compatibility</strong></td>
+                        <td class="winner">99%</td>
+                        <td class="loser">85%</td>
+                        <td class="loser">78%</td>
+                        <td class="loser">82%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>API Principal</strong></td>
+                        <td class="winner">Velocity + Xeno</td>
+                        <td class="loser">Básica</td>
+                        <td class="loser">Limitada</td>
+                        <td class="loser">Estándar</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Anti-detección</strong></td>
+                        <td class="winner">Avanzada</td>
+                        <td class="loser">Media</td>
+                        <td class="loser">Básica</td>
+                        <td class="loser">Media</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Velocidad de Inyección</strong></td>
+                        <td class="winner">Instantánea</td>
+                        <td class="loser">Rápida</td>
+                        <td class="loser">Lenta</td>
+                        <td class="loser">Media</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Interfaz</strong></td>
+                        <td class="winner">Premium</td>
+                        <td class="loser">Básica</td>
+                        <td class="loser">Anticuada</td>
+                        <td class="loser">Estándar</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Estabilidad</strong></td>
+                        <td class="winner">100%</td>
+                        <td class="loser">90%</td>
+                        <td class="loser">75%</td>
+                        <td class="loser">85%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- CHANGELOG SECTION -->
+    <section class="section" id="changelog">
+        <h2 class="section-title" data-aos="fade-up">Historial de Evolución</h2>
+        <div class="timeline">
+            <div class="timeline-item latest" data-aos="fade-right" data-aos-delay="100">
+                <div class="timeline-version">v4.0.1</div>
+                <div class="timeline-date">29 Julio 2025</div>
+                <div class="timeline-changes">
+                    • Implementación completa de Velocity API como motor principal<br>
+                    • Sistema de anti-detección de nueva generación<br>
+                    • Optimización extrema de velocidad de inyección<br>
+                    • Interfaz completamente rediseñada con enfoque premium
+                </div>
+            </div>
+            <div class="timeline-item" data-aos="fade-right" data-aos-delay="200">
+                <div class="timeline-version">v3.9.5</div>
+                <div class="timeline-date">22 Julio 2025</div>
+                <div class="timeline-changes">
+                    • Mejoras significativas en compatibilidad UNC (98%)<br>
+                    • Integración inicial de Velocity API<br>
+                    • Corrección de bugs críticos en sistemas Windows 11<br>
+                    • Mejoras en estabilidad general
+                </div>
+            </div>
+            <div class="timeline-item" data-aos="fade-right" data-aos-delay="300">
+                <div class="timeline-version">v3.9.0</div>
+                <div class="timeline-date">15 Julio 2025</div>
+                <div class="timeline-changes">
+                    • Sistema de pestañas infinitas implementado<br>
+                    • Alternancia entre APIs Velocity y Xeno<br>
+                    • Bypass mejorado para últimas actualizaciones de Roblox<br>
+                    • Optimización de memoria y recursos
+                </div>
+            </div>
+            <div class="timeline-item" data-aos="fade-right" data-aos-delay="400">
+                <div class="timeline-version">v3.8.2</div>
+                <div class="timeline-date">8 Julio 2025</div>
+                <div class="timeline-changes">
+                    • Refactorización completa del motor de inyección<br>
+                    • Mejoras en detección automática de actualizaciones<br>
+                    • Corrección de problemas de compatibilidad con scripts legacy<br>
+                    • Implementación de sistema de logs avanzado
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS SECTION -->
+    <section class="section">
+        <h2 class="section-title" data-aos="fade-up">Lo que Dicen los Profesionales</h2>
+        <div class="testimonials-carousel">
+            <div class="testimonial-track">
+                <div class="testimonial-card">
+                    <div class="testimonial-avatar">CX</div>
+                    <p class="testimonial-text">
+                        "Black Echo me dio control total sin ser detectado. Es como tener un superpoder en Roblox."
+                    </p>
+                    <div class="testimonial-author">- CyberXploit</div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-avatar">SK</div>
+                    <p class="testimonial-text">
+                        "La diferencia con otros exploits es abismal. Black Echo está en otra liga completamente."
+                    </p>
+                    <div class="testimonial-author">- ScriptKing</div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-avatar">DH</div>
+                    <p class="testimonial-text">
+                        "Velocidad, estabilidad y seguridad. Black Echo tiene todo lo que un scripter profesional necesita."
+                    </p>
+                    <div class="testimonial-author">- DataHunter</div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-avatar">NR</div>
+                    <p class="testimonial-text">
+                        "Después de probar Black Echo, es imposible volver a usar cualquier otro exploit. Simplemente superior."
+                    </p>
+                    <div class="testimonial-author">- NetRunner</div>
+                </div>
+                <!-- Duplicate for seamless loop -->
+                <div class="testimonial-card">
+                    <div class="testimonial-avatar">CX</div>
+                    <p class="testimonial-text">
+                        "Black Echo me dio control total sin ser detectado. Es como tener un superpoder en Roblox."
+                    </p>
+                    <div class="testimonial-author">- CyberXploit</div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-avatar">SK</div>
+                    <p class="testimonial-text">
+                        "La diferencia con otros exploits es abismal. Black Echo está en otra liga completamente."
+                    </p>
+                    <div class="testimonial-author">- ScriptKing</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="section">
+        <h2 class="section-title" data-aos="fade-up">Preguntas Frecuentes</h2>
+        <div class="faq-container">
+            <div class="faq-item" data-aos="fade-up" data-aos-delay="100">
+                <div class="faq-question">¿Cómo se instala Black Echo?</div>
+                <div class="faq-answer">
+                    La instalación es simple: descarga el archivo, ejecuta como administrador, y Black Echo se configura automáticamente. No requiere dependencias adicionales.
+                </div>
+            </div>
+            <div class="faq-item" data-aos="fade-up" data-aos-delay="200">
+                <div class="faq-question">¿Qué APIs utiliza Black Echo?</div>
+                <div class="faq-answer">
+                    Black Echo utiliza Velocity API como motor principal, con alternancia opcional a Xeno API para máxima compatibilidad y flexibilidad.
+                </div>
+            </div>
+            <div class="faq-item" data-aos="fade-up" data-aos-delay="300">
+                <div class="faq-question">¿Es seguro contra bans?</div>
+                <div class="faq-answer">
+                    Sí. Black Echo cuenta con el sistema anti-detección más avanzado del mercado, con bypass estable y actualizaciones constantes de seguridad.
+                </div>
+            </div>
+            <div class="faq-item" data-aos="fade-up" data-aos-delay="400">
+                <div class="faq-question">¿Funciona con todos los scripts?</div>
+                <div class="faq-answer">
+                    Con 99% de compatibilidad UNC y 95% SUNC, Black Echo ejecuta prácticamente cualquier script sin problemas de compatibilidad.
+                </div>
+            </div>
+            <div class="faq-item" data-aos="fade-up" data-aos-delay="500">
+                <div class="faq-question">¿Tiene soporte técnico?</div>
+                <div class="faq-answer">
+                    Sí, ofrecemos soporte completo a través de nuestro Discord oficial, con respuesta rápida y asistencia especializada.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DOWNLOAD SECTION -->
+    <section class="section download-section" id="download">
+        <h2 class="section-title" data-aos="fade-up">Descarga Black Echo</h2>
+        <div class="download-info" data-aos="fade-up" data-aos-delay="200">
+            <div class="download-version">Versión Actual: v4.0.1</div>
+            <div class="download-details">
+                <strong>Fecha de lanzamiento:</strong> 29 Julio 2025<br>
+                <strong>Tamaño:</strong> 18.5 MB<br>
+                <strong>Compatibilidad:</strong> Windows 10/11 (64-bit)<br>
+                <strong>Requisitos:</strong> .NET Framework 4.8+
+            </div>
+        </div>
+        <a href="#" class="download-btn" data-aos="zoom-in" data-aos-delay="400">
+            <i class="fas fa-download"></i> Descargar Black Echo
+        </a>
+        <div class="download-note" data-aos="fade-up" data-aos-delay="600">
+            Descarga gratuita • Sin virus • Actualizaciones automáticas • Soporte 24/7
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-logo" data-aos="fade-up">BLACK ECHO</div>
+        <div class="social-links" data-aos="fade-up" data-aos-delay="200">
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+        </div>
+        <div class="footer-links" data-aos="fade-up" data-aos-delay="300">
+            <a href="#" class="footer-link">Política de Privacidad</a>
+            <a href="#" class="footer-link">Términos de Uso</a>
+            <a href="#" class="footer-link">Contacto</a>
+            <a href="#" class="footer-link">Documentación</a>
+        </div>
+        <div class="footer-copyright" data-aos="fade-up" data-aos-delay="400">
+            © 2025 Black Echo. Todos los derechos reservados.
+        </div>
+        <div class="footer-made-with" data-aos="fade-up" data-aos-delay="500">
+            Desarrollado con <span class="heart">❤️</span> para la comunidad de Roblox
+        </div>
+    </footer>
+
+    <!-- AUDIO CONTROLS -->
+    <div class="audio-controls">
+        <button class="audio-toggle" id="audioToggle">
+            <i class="fas fa-volume-up"></i>
+        </button>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // ========== INITIALIZATION ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize AOS
+            AOS.init({
+                duration: 1000,
+                once: true,
+                offset: 100,
+                easing: 'ease-out-cubic'
+            });
+
+            // Start all effects
+            initPreloader();
+            initCursor();
+            initMatrixRain();
+            initParticles();
+            initNavbar();
+            initNarrativeAnimation();
+            initFAQ();
+            initAudio();
+            initSmoothScroll();
+            
+            // Console easter egg
+            console.log(`
+    ██████╗ ██╗      █████╗  ██████╗██╗  ██╗    ███████╗ ██████╗██╗  ██╗ ██████╗ 
+    ██╔══██╗██║     ██╔══██╗██╔════╝██║ ██╔╝    ██╔════╝██╔════╝██║  ██║██╔═══██╗
+    ██████╔╝██║     ███████║██║     █████╔╝     █████╗  ██║     ███████║██║   ██║
+    ██╔══██╗██║     ██╔══██║██║     ██╔═██╗     ██╔══╝  ██║     ██╔══██║██║   ██║
+    ██████╔╝███████╗██║  ██║╚██████╗██║  ██╗    ███████╗╚██████╗██║  ██║╚██████╔╝
+    ╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝    ╚══════╝ ╚═════╝╚═╝  ╚═╝ ╚═════╝ 
+            
+    🔥 El Dominio Total del Scripting - v4.0.1
+    💎 Potente • Invisible • Avanzado
+    🚀 Desarrollado para la élite del scripting
+            `);
+            console.log('%c⚡ Sistema Black Echo: ACTIVO', 'color: #00f5ff; font-size: 16px; font-weight: bold;');
+            console.log('%c🛡️ Anti-detección: MÁXIMO NIVEL', 'color: #9d4edd; font-size: 14px;');
+            console.log('%c🎯 Velocity API: OPERACIONAL', 'color: #39ff14; font-size: 14px;');
+        });
+
+        // ========== PRELOADER ==========
+        function initPreloader() {
+            const preloader = document.getElementById('preloader');
+            
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    preloader.classList.add('hidden');
+                }, 2500);
+            });
+        }
+
+        // ========== CUSTOM CURSOR ==========
+        function initCursor() {
+            const cursor = document.getElementById('cursor');
+            const cursorRing = document.getElementById('cursorRing');
+
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+                
+                setTimeout(() => {
+                    cursorRing.style.left = (e.clientX - 15) + 'px';
+                    cursorRing.style.top = (e.clientY - 15) + 'px';
+                }, 100);
+            });
+
+            // Cursor hover effects
+            const hoverElements = document.querySelectorAll('a, button, .feature-card, .faq-question');
+            
+            hoverElements.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursor.classList.add('hover');
+                    cursorRing.classList.add('hover');
+                });
+                
+                el.addEventListener('mouseleave', () => {
+                    cursor.classList.remove('hover');
+                    cursorRing.classList.remove('hover');
+                });
+            });
+        }
+
+        // ========== MATRIX RAIN EFFECT ==========
+        function initMatrixRain() {
+            const canvas = document.getElementById('matrixCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:,.<>?';
+            const fontSize = 14;
+            const columns = canvas.width / fontSize;
+            const drops = [];
+            
+            for (let i = 0; i < columns; i++) {
+                drops[i] = 1;
+            }
+            
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#00f5ff';
+                ctx.font = fontSize + 'px monospace';
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars[Math.floor(Math.random() * chars.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            
+            setInterval(draw, 33);
+            
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        }
+
+        // ========== DIGITAL PARTICLES ==========
+        function initParticles() {
+            const container = document.getElementById('particlesContainer');
+            const colors = ['#00f5ff', '#9d4edd', '#ff073a'];
+            
+            function createParticle() {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.animationDuration = (Math.random() * 3 + 5) + 's';
+                particle.style.animationDelay = Math.random() * 2 + 's';
+                
+                container.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, 8000);
+            }
+            
+            setInterval(createParticle, 200);
+        }
+
+        // ========== NAVBAR SCROLL EFFECT ==========
+        function initNavbar() {
+            const navbar = document.getElementById('navbar');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        }
+
+        // ========== NARRATIVE ANIMATION ==========
+        function initNarrativeAnimation() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.narrative-text').forEach(text => {
+                observer.observe(text);
+            });
+        }
+
+        // ========== FAQ ACCORDION ==========
+        function initFAQ() {
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    
+                    // Close all other items
+                    faqItems.forEach(otherItem => {
+                        otherItem.classList.remove('active');
+                    });
+                    
+                    // Toggle current item
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        }
+
+        // ========== AUDIO SYSTEM ==========
+        function initAudio() {
+            const audioToggle = document.getElementById('audioToggle');
+            let audioContext;
+            let oscillators = [];
+            let gainNode;
+            let isPlaying = false;
+            
+            function createAmbientSound() {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                
+                // Create multiple oscillators for rich ambient sound
+                const osc1 = audioContext.createOscillator();
+                const osc2 = audioContext.createOscillator();
+                const osc3 = audioContext.createOscillator();
+                
+                gainNode = audioContext.createGain();
+                
+                osc1.type = 'sine';
+                osc1.frequency.setValueAtTime(220, audioContext.currentTime);
+                
+                osc2.type = 'sine';
+                osc2.frequency.setValueAtTime(110, audioContext.currentTime);
+                
+                osc3.type = 'triangle';
+                osc3.frequency.setValueAtTime(55, audioContext.currentTime);
+                
+                gainNode.gain.setValueAtTime(0.02, audioContext.currentTime);
+                
+                osc1.connect(gainNode);
+                osc2.connect(gainNode);
+                osc3.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                osc1.start();
+                osc2.start();
+                osc3.start();
+                
+                oscillators = [osc1, osc2, osc3];
+                
+                // Add subtle frequency modulation
+                setInterval(() => {
+                    if (isPlaying) {
+                        osc1.frequency.setValueAtTime(220 + Math.sin(Date.now() * 0.001) * 5, audioContext.currentTime);
+                        osc2.frequency.setValueAtTime(110 + Math.sin(Date.now() * 0.0008) * 3, audioContext.currentTime);
+                    }
+                }, 100);
+            }
+            
+            audioToggle.addEventListener('click', () => {
+                if (!isPlaying) {
+                    createAmbientSound();
+                    audioToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                    isPlaying = true;
+                } else {
+                    oscillators.forEach(osc => {
+                        try { osc.stop(); } catch(e) {}
+                    });
+                    oscillators = [];
+                    audioToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
+                    isPlaying = false;
+                }
+            });
+        }
+
+        // ========== SMOOTH SCROLL ==========
+        function initSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+
+        // ========== ENHANCED INTERACTIONS ==========
+        
+        // Glitch effect for hero title
+        function addGlitchEffect() {
+            const title = document.querySelector('.hero-title');
+            const originalText = title.textContent;
+            const glitchChars = '!@#$%^&*()_+-=[]{}|;:,.<>?01';
+            
+            setInterval(() => {
+                if (Math.random() < 0.05) { // 5% chance to glitch
+                    let glitchedText = '';
+                    for (let i = 0; i < originalText.length; i++) {
+                        if (Math.random() < 0.1) {
+                            glitchedText += glitchChars[Math.floor(Math.random() * glitchChars.length)];
+                        } else {
+                            glitchedText += originalText[i];
+                        }
+                    }
+                    title.textContent = glitchedText;
+                    
+                    setTimeout(() => {
+                        title.textContent = originalText;
+                    }, 50);
+                }
+            }, 3000);
+        }
+        
+        // Typewriter effect for subtitle
+        function typewriterEffect() {
+            const subtitle = document.querySelector('.hero-subtitle');
+            const text = subtitle.textContent;
+            subtitle.textContent = '';
+            subtitle.style.opacity = '1';
+            
+            let i = 0;
+            const typeInterval = setInterval(() => {
+                if (i < text.length) {
+                    subtitle.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typeInterval);
+                }
+            }, 100);
+        }
+        
+        // Enhanced button effects
+        document.querySelectorAll('.hero-cta, .download-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // Create ripple effect
+                const rect = this.getBoundingClientRect();
+                const ripple = document.createElement('span');
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s linear';
+                ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.style.pointerEvents = 'none';
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+        
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.hero-content');
+            const speed = scrolled * 0.5;
+            
+            if (parallax && scrolled < window.innerHeight) {
+                parallax.style.transform = `translateY(${speed}px)`;
+            }
+        });
+        
+        // Enhanced feature card interactions
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-20px) rotateX(10deg) rotateY(5deg)';
+                this.style.boxShadow = '0 40px 80px rgba(0, 245, 255, 0.3)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) rotateX(0deg) rotateY(0deg)';
+                this.style.boxShadow = 'none';
+            });
+        });
+        
+        // Dynamic particle colors based on scroll position
+        let currentSection = 0;
+        const sections = document.querySelectorAll('.section');
+        
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.scrollY + window.innerHeight / 2;
+            
+            sections.forEach((section, index) => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    if (currentSection !== index) {
+                        currentSection = index;
+                        updateParticleColors(index);
+                    }
+                }
+            });
+        });
+        
+        function updateParticleColors(sectionIndex) {
+            const colorSets = [
+                ['#00f5ff', '#9d4edd'], // Hero
+                ['#9d4edd', '#ff073a'], // Why
+                ['#00f5ff', '#39ff14'], // Features
+                ['#ff073a', '#00f5ff'], // Comparison
+                ['#9d4edd', '#39ff14'], // Changelog
+                ['#00f5ff', '#ff073a']  // Download
+            ];
+            
+            const colors = colorSets[sectionIndex] || colorSets[0];
+            
+            // Update CSS custom properties for particles
+            document.documentElement.style.setProperty('--particle-color-1', colors[0]);
+            document.documentElement.style.setProperty('--particle-color-2', colors[1]);
+        }
+        
+        // Advanced scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    
+                    // Add stagger effect for children
+                    const children = entry.target.querySelectorAll('.feature-card, .timeline-item, .testimonial-card');
+                    children.forEach((child, index) => {
+                        setTimeout(() => {
+                            child.style.opacity = '1';
+                            child.style.transform = 'translateY(0)';
+                        }, index * 100);
+                    });
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all animated elements
+        document.querySelectorAll('.section, .feature-card, .timeline-item').forEach(el => {
+            scrollObserver.observe(el);
+        });
+        
+        // Performance optimization
+        let ticking = false;
+        
+        function requestTick() {
+            if (!ticking) {
+                requestAnimationFrame(updateAnimations);
+                ticking = true;
+            }
+        }
+        
+        function updateAnimations() {
+            // Update any frame-based animations here
+            ticking = false;
+        }
+        
+        window.addEventListener('scroll', requestTick);
+        
+        // Initialize enhanced effects after a delay
+        setTimeout(() => {
+            addGlitchEffect();
+            typewriterEffect();
+        }, 3000);
+        
+        // Add CSS for ripple animation
+        const rippleCSS = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        
+        const style = document.createElement('style');
+        style.textContent = rippleCSS;
+        document.head.appendChild(style);
+        
+        // Toast notifications system
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            toast.style.position = 'fixed';
+            toast.style.top = '20px';
+            toast.style.right = '20px';
+            toast.style.padding = '15px 25px';
+            toast.style.background = 'linear-gradient(45deg, #00f5ff, #9d4edd)';
+            toast.style.color = 'white';
+            toast.style.borderRadius = '10px';
+            toast.style.zIndex = '10001';
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(100px)';
+            toast.style.transition = 'all 0.3s ease';
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateX(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+        
+        // Show welcome toast after page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                showToast('Bienvenido a Black Echo - El futuro del scripting', 'success');
+            }, 4000);
+        });
+        
+        // Enhanced download button
+        document.querySelector('.download-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            showToast('Iniciando descarga de Black Echo v4.0.1...', 'info');
+            
+            // Simulate download process
+            setTimeout(() => {
+                showToast('Descarga completada. ¡Disfruta Black Echo!', 'success');
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
