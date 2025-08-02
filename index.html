@@ -1482,7 +1482,7 @@
                 <strong>Requisitos:</strong> .NET Framework 4.8+
             </div>
         </div>
-        <a href="https://files.catbox.moe/htanbx.zip" class="download-btn" target="_blank" data-aos="zoom-in" data-aos-delay="400">
+        <a href="https://files.catbox.moe/htanbx.zip" class="download-btn" data-aos="zoom-in" data-aos-delay="400">
             <i class="fas fa-download"></i> Descargar Black Echo
         </a>
         <div class="download-note" data-aos="fade-up" data-aos-delay="600">
@@ -1854,28 +1854,39 @@
         // Enhanced button effects
         document.querySelectorAll('.hero-cta, .download-btn').forEach(btn => {
             btn.addEventListener('click', function(e) {
-                // Create ripple effect
-                const rect = this.getBoundingClientRect();
-                const ripple = document.createElement('span');
-                const size = Math.max(rect.width, rect.height);
-                const x = e.clientX - rect.left - size / 2;
-                const y = e.clientY - rect.top - size / 2;
-                
-                ripple.style.position = 'absolute';
-                ripple.style.borderRadius = '50%';
-                ripple.style.transform = 'scale(0)';
-                ripple.style.animation = 'ripple 0.6s linear';
-                ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
-                ripple.style.width = ripple.style.height = size + 'px';
-                ripple.style.left = x + 'px';
-                ripple.style.top = y + 'px';
-                ripple.style.pointerEvents = 'none';
-                
-                this.appendChild(ripple);
-                
-                setTimeout(() => {
-                    ripple.remove();
-                }, 600);
+                // Only add ripple effect, but don't prevent default for download links
+                if (!this.getAttribute('href') || this.getAttribute('href').startsWith('#')) {
+                    // This is for internal navigation or buttons without href
+                    // Create ripple effect
+                    const rect = this.getBoundingClientRect();
+                    const ripple = document.createElement('span');
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.position = 'absolute';
+                    ripple.style.borderRadius = '50%';
+                    ripple.style.transform = 'scale(0)';
+                    ripple.style.animation = 'ripple 0.6s linear';
+                    ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.style.pointerEvents = 'none';
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                } else {
+                    // For actual download links, show toast notification
+                    showToast('Iniciando descarga de Black Echo v4.0.1...', 'info');
+                    
+                    setTimeout(() => {
+                        showToast('¡Descarga completada! Disfruta Black Echo.', 'success');
+                    }, 2000);
+                }
             });
         });
         
@@ -1966,19 +1977,8 @@
         // Show welcome toast after page load
         window.addEventListener('load', () => {
             setTimeout(() => {
-                showToast('Bienvenido a Black Echo - El futuro del scripting', 'success');
+                showToast('¡Bienvenido a Black Echo - El futuro del scripting!', 'success');
             }, 4000);
-        });
-        
-        // Enhanced download button
-        document.querySelector('.download-btn').addEventListener('click', function(e) {
-            e.preventDefault();
-            showToast('Iniciando descarga de Black Echo v4.0.1...', 'info');
-            
-            // Simulate download process
-            setTimeout(() => {
-                showToast('Descarga completada. ¡Disfruta Black Echo!', 'success');
-            }, 2000);
         });
 
         // Handle resize events for responsive behavior
