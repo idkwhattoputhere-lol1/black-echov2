@@ -342,7 +342,7 @@
         .user-dropdown {
             position: absolute;
             top: 100%;
-            right: 0;
+            left: 0;
             background: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(0, 245, 255, 0.2);
@@ -473,7 +473,7 @@
         .auth-close {
             position: absolute;
             top: 20px;
-            right: 20px;
+            left: 20px;
             background: none;
             border: none;
             color: var(--text-gray);
@@ -691,7 +691,7 @@
             position: absolute;
             top: 50%;
             left: 0;
-            right: 0;
+            left: 0;
             height: 1px;
             background: linear-gradient(90deg, transparent, rgba(0, 245, 255, 0.3), transparent);
         }
@@ -778,7 +778,7 @@
             border-top: 2px solid var(--cyber-blue);
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-right: 10px;
+            margin-left: 10px;
         }
 
         @keyframes spin {
@@ -1625,7 +1625,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
+            left: 0;
             bottom: 0;
             background: rgba(0, 0, 0, 0.9);
             backdrop-filter: blur(20px);
@@ -1681,6 +1681,69 @@
             box-shadow: 0 10px 25px rgba(0, 245, 255, 0.3);
         }
     </style>
+
+<style>
+#chatbot-toggle {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: #1e1e1e;
+  color: white;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10000;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  font-size: 24px;
+}
+
+#chatbot-sidebar {
+  position: fixed;
+  top: 0;
+  left: -400px; /* oculto por defecto */
+  width: 400px;
+  height: 100%;
+  background: #121212;
+  border-left: 2px solid #333;
+  box-shadow: -4px 0 10px rgba(0,0,0,0.5);
+  transition: right 0.3s ease-in-out;
+  z-index: 9999;
+}
+
+#chatbot-sidebar.open {
+  left: 0;
+}
+
+
+#chatbot-close {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #333;
+  color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.5);
+  z-index: 10001;
+}
+
+#chatbot-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+</style>
+
 </head>
 <body>
     <!-- PRELOADER -->
@@ -3046,5 +3109,27 @@
     <audio autoplay loop id="bgmusic">
         <source src="https://cdn.pixabay.com/audio/2022/03/03/audio_a75ca63405.mp3" type="audio/mpeg" />
     </audio>
+
+<!-- Botón flotante para abrir/cerrar chatbot -->
+<div id="chatbot-toggle">💬</div>
+
+<!-- Panel lateral del chatbot -->
+<div id="chatbot-sidebar">
+  <div id="chatbot-close">✖</div>
+
+  <iframe id="chatbot-frame" src="https://blackechortd-black-echo-gemini-chatbot.hf.space"></iframe>
+</div>
+
+<script>
+document.getElementById("chatbot-toggle").addEventListener("click", () => {
+  document.getElementById("chatbot-sidebar").classList.toggle("open");
+});
+
+document.getElementById("chatbot-close").addEventListener("click", () => {
+  document.getElementById("chatbot-sidebar").classList.remove("open");
+});
+
+</script>
+
 </body>
 </html>
