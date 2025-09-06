@@ -3053,9 +3053,7 @@
         });
     </script>
 
-    <audio autoplay loop id="bgmusic">
-        <source src="https://cdn.pixabay.com/audio/2022/03/03/audio_a75ca63405.mp3" type="audio/mpeg" />
-    </audio>
+    
 
 <!-- Botón flotante para abrir/cerrar chatbot -->
 <div id="chatbot-toggle">💬</div>
@@ -3080,28 +3078,28 @@ document.getElementById("chatbot-close").addEventListener("click", () => {
 
 
 <!-- AUDIO -->
-<audio autoplay loop id="bgmusic">
+<audio id="bgmusic" loop>
   <source src="https://cdn.pixabay.com/audio/2022/03/03/audio_a75ca63405.mp3" type="audio/mpeg" />
 </audio>
 
 <!-- Botón de pausa/reanudar -->
 <div class="audio-controls" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
   <button id="musicBtn" style="padding: 12px 20px; border-radius: 10px; border: none; cursor: pointer; background: linear-gradient(45deg, #00f5ff, #9d4edd); color: white; font-weight: bold; box-shadow: 0 0 15px rgba(0,245,255,0.3);">
-    ⏸️ Pausar Música
+    ▶️ Reproducir Música
   </button>
 </div>
 
 <script>
   const bgMusic = document.getElementById("bgmusic");
   const musicBtn = document.getElementById("musicBtn");
-  let isPlaying = true;
+  let isPlaying = false;
 
   musicBtn.addEventListener("click", () => {
     if (isPlaying) {
       bgMusic.pause();
-      musicBtn.textContent = "▶️ Reanudar Música";
+      musicBtn.textContent = "▶️ Reproducir Música";
     } else {
-      bgMusic.play();
+      bgMusic.play().catch(err => console.log("Error al reproducir:", err));
       musicBtn.textContent = "⏸️ Pausar Música";
     }
     isPlaying = !isPlaying;
